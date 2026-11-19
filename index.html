@@ -3,175 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computational Toolbox & Academic Portal</title>
+    <title>Computational Academic Portal</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Client-side PDF generator library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 </head>
 <body>
-
-    <div class="app-container">
-        <header class="app-header">
-            <h1>Computational Academic Portal</h1>
-            <p>Notes, Past Papers & Advanced Calculators</p>
+    <div class="page-wrapper">
+        <header class="hero-header">
+            <div class="badge">Academic Study &amp; Calculation Suite</div>
+            <h1>Computational Portal</h1>
+            <p>Subject Notes as PDFs, External Past Paper Links &amp; Science/Math Calculators</p>
         </header>
 
-        <!-- Main 3-Tab Navigation -->
-        <nav class="main-nav">
-            <button class="nav-btn active" data-tab="notes-tab">📚 Notes</button>
-            <button class="nav-btn" data-tab="papers-tab">📄 Past Papers</button>
-            <button class="nav-btn" data-tab="tools-tab">🧮 Tools</button>
+        <!-- Three Main Navigation Buttons -->
+        <nav class="primary-nav" aria-label="Main Sections">
+            <button type="button" class="primary-tab-btn active-notes" data-section="notes-section">
+                <span class="tab-icon">📚</span>
+                <span class="tab-label">Notes</span>
+            </button>
+            <button type="button" class="primary-tab-btn" data-section="papers-section">
+                <span class="tab-icon">📄</span>
+                <span class="tab-label">Past Papers</span>
+            </button>
+            <button type="button" class="primary-tab-btn" data-section="tools-section">
+                <span class="tab-icon">🧮</span>
+                <span class="tab-label">Tools</span>
+            </button>
         </nav>
 
-        <main class="module-content">
-            
-            <!-- TAB 1: NOTES SECTION -->
-            <section id="notes-tab" class="tab-panel">
-                <h2>Subject Notes & PDFs</h2>
-                <p class="subtitle">Select a subject below to explore topics and access downloadable study materials.</p>
-                
-                <div class="subject-grid">
-                    <div class="subject-card" onclick="openSubject('phy')">
-                        <h3>⚡ Physics</h3>
-                        <p>Mechanics, Kinematics, Waves & Electricity</p>
-                    </div>
-                    <div class="subject-card" onclick="openSubject('chem')">
-                        <h3>🧪 Chemistry</h3>
-                        <p>Stoichiometry, Balancing & Organic Chemistry</p>
-                    </div>
-                    <div class="subject-card" onclick="openSubject('bio')">
-                        <h3>🧬 Biology</h3>
-                        <p>Cell Biology, Genetics & Human Physiology</p>
-                    </div>
-                    <div class="subject-card" onclick="openSubject('civic')">
-                        <h3>🏛️ Civic Education</h3>
-                        <p>Governance, Human Rights & International Law</p>
+        <main class="content-area">
+            <!-- =========================================================
+                 SECTION 1: NOTES (Add Any Subject & Access as PDF)
+            ========================================================== -->
+            <section id="notes-section" class="main-section">
+                <div class="section-banner banner-indigo">
+                    <div>
+                        <h2>Subject Notes &amp; PDF Generator</h2>
+                        <p>Create notes for any subject or topic and download/open them as a PDF.</p>
                     </div>
                 </div>
 
-                <!-- Dynamic Topic Drawer / PDF Viewer Area -->
-                <div id="topic-drawer" class="topic-drawer hidden">
-                    <button class="back-btn" onclick="closeSubject()">← Back to Subjects</button>
-                    <h3 id="drawer-subject-title">Subject Topics</h3>
-                    <div id="topic-list-container" class="topic-list">
-                        <!-- Dynamically populated topics with PDF links -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- TAB 2: PAST PAPERS SECTION -->
-            <section id="papers-tab" class="tab-panel hidden">
-                <h2>ECZ Past Papers & Exam Guides</h2>
-                <p class="subtitle">Download official examination papers and marking keys.</p>
-                
-                <div class="papers-list">
-                    <div class="paper-item">
-                        <div class="paper-info">
-                            <h4>Physics Paper 1 (Multiple Choice) - 2024</h4>
-                            <span>Examinations Council of Zambia • PDF</span>
-                        </div>
-                        <a href="#" class="download-btn" target="_blank">Download PDF</a>
-                    </div>
-                    <div class="paper-item">
-                        <div class="paper-info">
-                            <h4>Chemistry Paper 2 (Theory) - 2024</h4>
-                            <span>Examinations Council of Zambia • PDF</span>
-                        </div>
-                        <a href="#" class="download-btn" target="_blank">Download PDF</a>
-                    </div>
-                    <div class="paper-item">
-                        <div class="paper-info">
-                            <h4>Mathematics Paper 1 - 2024</h4>
-                            <span>Examinations Council of Zambia • PDF</span>
-                        </div>
-                        <a href="#" class="download-btn" target="_blank">Download PDF</a>
-                    </div>
-                </div>
-            </section>
-
-            <!-- TAB 3: TOOLS SECTION (Calculators) -->
-            <section id="tools-tab" class="tab-panel hidden">
-                
-                <!-- Tool Sub-Navigation -->
-                <div class="tool-sub-nav">
-                    <button class="tool-btn active" data-tool="chem-tool">Chemistry Tool</button>
-                    <button class="tool-btn" data-tool="math-tool">Math Tool</button>
-                    <button class="tool-btn" data-tool="physics-tool">Physics Tool</button>
-                </div>
-
-                <!-- Chemistry Tool -->
-                <div id="chem-tool" class="tool-panel">
-                    <h3>Chemistry Balancer & Stoichiometry</h3>
-                    <div class="form-group">
-                        <label>Enter Equation (e.g. H2 + O2 = H2O):</label>
-                        <div class="btn-toolbar">
-                            <input type="text" id="input-equation" placeholder="H2 + O2 -> H2O">
-                            <button type="button" class="action-btn secondary-btn" onclick="loadChemExample()">Load Example</button>
-                        </div>
-                    </div>
-                    <button id="btn-balance" class="action-btn">Balance Equation</button>
-                    
-                    <div id="balance-result-box" class="result-box hidden">
-                        <h4>Balanced Equation:</h4>
-                        <p id="output-balanced-eq" class="highlight-text"></p>
-                        
-                        <div class="stoich-solver-zone">
-                            <h5>Stoichiometric Variable Solver</h5>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Choose Known Substance:</label>
-                                    <select id="select-known-chem"></select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Input Mass (grams):</label>
-                                    <input type="number" id="input-known-mass" step="any" placeholder="e.g., 2.8">
-                                </div>
+                <!-- Add New Note Form -->
+                <div class="card add-box">
+                    <h3>Add New Notes</h3>
+                    <form id="add-note-form" class="stacked-form">
+                        <div class="two-col">
+                            <div class="field">
+                                <label for="note-subject">Subject (e.g., Physics, Chemistry, Biology, Civic Ed)</label>
+                                <input type="text" id="note-subject" list="subject-suggestions" placeholder="Type any subject..." required>
+                                <datalist id="subject-suggestions">
+                                    <option value="Physics">
+                                    <option value="Chemistry">
+                                    <option value="Biology">
+                                    <option value="Civic Education">
+                                    <option value="Mathematics">
+                                </datalist>
                             </div>
-                            <button id="btn-solve-stoich" class="action-btn">Calculate Yields & RTP Volumes</button>
-                            <div id="stoich-steps-output" class="dynamic-output-list"></div>
+                            <div class="field">
+                                <label for="note-topic">Topic Title</label>
+                                <input type="text" id="note-topic" placeholder="e.g., Newton's Laws of Motion" required>
+                            </div>
                         </div>
-                    </div>
+                        <div class="field">
+                            <label for="note-body">Note Content</label>
+                            <textarea id="note-body" rows="5" placeholder="Write your definitions, formulas, key points, or summary here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-indigo">Save Note &amp; Add to Library</button>
+                    </form>
                 </div>
 
-                <!-- Math Tool -->
-                <div id="math-tool" class="tool-panel hidden">
-                    <h3>Quadratic Equation Solver (ax² + bx + c = 0)</h3>
-                    <div class="form-row-three">
-                        <div class="form-group"><label>a:</label><input type="number" id="quad-a" step="any"></div>
-                        <div class="form-group"><label>b:</label><input type="number" id="quad-b" step="any"></div>
-                        <div class="form-group"><label>c:</label><input type="number" id="quad-c" step="any"></div>
-                    </div>
-                    <button type="button" class="action-btn secondary-btn" style="margin-bottom:0.8rem; width:auto;" onclick="loadQuadExample()">Load Example (2x² - 5x - 3 = 0)</button>
-                    <button id="btn-solve-quadratic" class="action-btn">Solve Roots</button>
-                    <div id="quadratic-result-box" class="result-box hidden"></div>
-                </div>
+                <!-- Subject Filter Pills -->
+                <div class="filter-bar" id="notes-subject-filter"></div>
 
-                <!-- Physics Tool -->
-                <div id="physics-tool" class="tool-panel hidden">
-                    <h3>Linear Motion Kinematics Engine</h3>
-                    <p class="instruction-note">Provide <strong>exactly 3</strong> values. Leave the other 2 blank.</p>
-                    
-                    <div class="form-grid-kinematics">
-                        <div class="form-group"><label>Initial Velocity (u) [m/s]:</label><input type="number" id="kin-u" placeholder="Leave blank"></div>
-                        <div class="form-group"><label>Final Velocity (v) [m/s]:</label><input type="number" id="kin-v" placeholder="Leave blank"></div>
-                        <div class="form-group"><label>Acceleration (a) [m/s²]:</label><input type="number" id="kin-a" placeholder="Leave blank"></div>
-                        <div class="form-group"><label>Displacement (s) [m]:</label><input type="number" id="kin-s" placeholder="Leave blank"></div>
-                        <div class="form-group"><label>Time Interval (t) [s]:</label><input type="number" id="kin-t" placeholder="Leave blank"></div>
-                    </div>
-
-                    <div class="form-row">
-                        <button type="button" class="action-btn secondary-btn" onclick="resetKinematics()">Reset Fields</button>
-                        <button id="btn-solve-kinematics" class="action-btn">Solve Motion Parameters</button>
-                    </div>
-                    <div id="kinematics-result-box" class="result-box hidden"></div>
-                </div>
-
+                <!-- Saved Notes Cards -->
+                <div id="notes-list" class="cards-grid"></div>
             </section>
 
-        </main>
-    </div>
+            <!-- =========================================================
+                 SECTION 2: PAST PAPERS (External Links Manager)
+            ========================================================== -->
+            <section id="papers-section" class="main-section hidden">
+                <div class="section-banner banner-teal">
+                    <div>
+                        <h2>Past Papers Directory</h2>
+                        <p>Add links to past papers hosted on external websites and open them directly.</p>
+                    </div>
+                </div>
 
-    <footer class="app-footer">
-        Computational Academic Portal • Created by <span>Chimfwembe</span>
-    </footer>
+                <!-- Add Past Paper Link Form -->
+                <div class="card add-box">
+                    <h3>Add External Past Paper Link</h3>
+                    <form id="add-paper-form" class="stacked-form">
+                        <div class="three-col">
+                            <div class="field">
+                                <label for="paper-subject">Subject</label>
+                                <input type="text" id="paper-subject" placeholder="e.g., Physics" required>
+                            </div>
+                            <div class="field">
+                                <label for="paper-title">Paper Name / Year</label>
+                                <input type="text" id="paper-title" placeholder="e.g., 2024 Paper 2 (GCE)" required>
+                            </div>
+                            <div class="field">
+                                <label for="paper-url">External Website Link (URL)</label>
+                                <input type="url" id="paper-url" placeholder="https://example.com/past-paper.pdf" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-teal">Save Past Paper Link</button>
+                    </form>
+                </div>
+
+                <!-- Past Papers List -->
+                <div id="papers-list" class="stack-list"></div>
+            </section>
+
+            <!-- =========================================================
+                 SECTION 3: TOOLS (Chemistry, Math, Physics)
+            ========================================================== -->
+            <section id="tools-section" class="main-section hidden">
+                <div class="section-banner banner-coral">
+                    <div>
+                        <h2>Interactive Calculators &amp; Solvers</h2>
+                        <p>Choose one of the three tools below to solve problems step-by-step.</p>
+                    </div>
+                </div>
+
+                <!-- Three Tool Selector Buttons -->
+                <div class="tool-switcher" role="tablist">
+                    <button type="button" class="tool-pill active" data-tool="tool-chemistry">🧪 Chemistry Balancer &amp; Stoich</button>
+                    <button type="button" class="tool-pill" data-tool="tool-math">📐 Math Solver</button>
+                    <button type="button" class="tool-pill" data-tool="tool-physics">⚡ Physics Kinematics</button>
+                </div>
+
+                <!-- TOOL A: CHEMISTRY -->
+                <div id="tool-chemistry" class="tool-box card">
+                    <h3>Chemistry Equation Balancer &amp; Stoichiometry</h3>
+                    <p class="muted-text">Supports arrows like <code>-&gt;</code>, <code>=</code>, <code>=&gt;</code>, <code>→</code>, and <code>⟶</code>.</p>
+
+                    <div class="field">
+                        <label for="chem-eq-input">Chemical Equation</label>
+                        <div class="inline-group">
+                            <input type="text" id="chem-eq-input" placeholder="e.g., Fe + Cl2 = FeCl3">
+                            <button type="button" id="btn-chem-example" class="btn btn-soft">Load Fe + Cl2</button>
+                        </div>
+                    </div>
+
+                    <button type="button" id="btn-chem-balance" class="btn btn-indigo">Balance Equation</button>
+                    <div id="chem-balance-output" class="output-panel hidden"></div>
+
+                    <div id="chem-stoich-panel" class="sub-box hidden">
+                        <h4>Solve Mass &amp; Gas Volume at RTP (24.0 dm³/mol)</h4>
+                        <div class="two-col">
+                            <div class="field">
+                                <label for="chem-known-species">Known Substance</label>
+                                <select id="chem-known-species"></select>
+                            </div>
+                            <div class="field">
+                                <label for="chem-known-mass">Known Mass (g)</label>
+                                <input type="number" id="chem-known-mass" step="any" placeholder="e.g., 2.8">
+                            </div>
+                        </div>
+                        <button type="button" id="btn-chem-solve" class="btn btn-teal">Calculate Yields</button>
+                        <div id="chem-stoich-output" class="output-panel hidden"></div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <h4>Limiting &amp; Excess Reactant (AMR vs RMR)</h4>
+                    <div class="field">
+                        <label for="lim-eq-input">Reaction with 2 Reactants</label>
+                        <div class="inline-group">
+                            <input type="text" id="lim-eq-input" placeholder="e.g., Mg + O2 -> MgO">
+                            <button type="button" id="btn-lim-example" class="btn btn-soft">Load Mg + O2</button>
+                        </div>
+                    </div>
+                    <div class="two-col">
+                        <div class="field">
+                            <label for="lim-mass-a">Reactant 1 Mass (g)</label>
+                            <input type="number" id="lim-mass-a" step="any" placeholder="e.g., 12">
+                        </div>
+                        <div class="field">
+                            <label for="lim-mass-b">Reactant 2 Mass (g)</label>
+                            <input type="number" id="lim-mass-b" step="any" placeholder="e.g., 8">
+                        </div>
+                    </div>
+                    <button type="button" id="btn-lim-solve" class="btn btn-coral">Find Limiting Reactant</button>
+                    <div id="lim-output" class="output-panel hidden"></div>
+                </div>
+
+                <!-- TOOL B: MATHEMATICS -->
+                <div id="tool-math" class="tool-box card hidden">
+                    <h3>Quadratic Solver (ax² + bx + c = 0)</h3>
+                    <div class="three-col">
+                        <div class="field">
+                            <label for="quad-a">Coefficient a</label>
+                            <input type="number" id="quad-a" step="any" placeholder="a">
+                        </div>
+                        <div class="field">
+                            <label for="quad-b">Coefficient b</label>
+                            <input type="number" id="quad-b" step="any" placeholder="b">
+                        </div>
+                        <div class="field">
+                            <label for="quad-c">Coefficient c</label>
+                            <input type="number" id="quad-c" step="any" placeholder="c">
+                        </div>
+                    </div>
+                    <div class="inline-group">
+                        <button type="button" id="btn-quad-example" class="btn btn-soft">Load Example</button>
+                        <button type="button" id="btn-quad-solve" class="btn btn-indigo">Solve Quadratic</button>
+                    </div>
+                    <div id="quad-output" class="output-panel hidden"></div>
+
+                    <hr class="divider">
+
+                    <h3>Simultaneous Linear Equations (Cramer's Rule)</h3>
+                    <div class="radio-row">
+                        <label class="radio-chip"><input type="radio" name="sim-vars" value="2" checked> 2 Variables (x, y)</label>
+                        <label class="radio-chip"><input type="radio" name="sim-vars" value="3"> 3 Variables (x, y, z)</label>
+                    </div>
+
+                    <div id="sim-2var-grid" class="matrix-block">
+                        <p class="muted-text">a₁x + b₁y = c₁ &nbsp;|&nbsp; a₂x + b₂y = c₂</p>
+                        <div class="three-col">
+                            <input type="number" id="s2-a1" step="any" placeholder="a1">
+                            <input type="number" id="s2-b1" step="any" placeholder="b1">
+                            <input type="number" id="s2-c1" step="any" placeholder="c1">
+                        </div>
+                        <div class="three-col">
+                            <input type="number" id="s2-a2" step="any" placeholder="a2">
+                            <input type="number" id="s2-b2" step="any" placeholder="b2">
+                            <input type="number" id="s2-c2" step="any" placeholder="c2">
+                        </div>
+                    </div>
+
+                    <div id="sim-3var-grid" class="matrix-block hidden">
+                        <p class="muted-text">a₁x + b₁y + c₁z = d₁ (for equations 1, 2, 3)</p>
+                        <div class="four-col">
+                            <input type="number" id="s3-a1" step="any" placeholder="a1">
+                            <input type="number" id="s3-b1" step="any" placeholder="b1">
+                            <input type="number" id="s3-c1" step="any" placeholder="c1">
+                            <input type="number" id="s3-d1" step="any" placeholder="d1">
+                        </div>
+                        <div class="four-col">
+                            <input type="number" id="s3-a2" step="any" placeholder="a2">
+                            <input type="number" id="s3-b2" step="any" placeholder="b2">
+                            <input type="number" id="s3-c2" step="any" placeholder="c2">
+                            <input type="number" id="s3-d2" step="any" placeholder="d2">
+                        </div>
+                        <div class="four-col">
+                            <input type="number" id="s3-a3" step="any" placeholder="a3">
+                            <input type="number" id="s3-b3" step="any" placeholder="b3">
+                            <input type="number" id="s3-c3" step="any" placeholder="c3">
+                            <input type="number" id="s3-d3" step="any" placeholder="d3">
+                        </div>
+                    </div>
+
+                    <button type="button" id="btn-sim-solve" class="btn btn-teal">Solve System</button>
+                    <div id="sim-output" class="output-panel hidden"></div>
+                </div>
+
+                <!-- TOOL C: PHYSICS -->
+                <div id="tool-physics" class="tool-box card hidden">
+                    <h3>Linear Motion Kinematics Engine</h3>
+                    <p class="muted-text">Enter <strong>any 3</strong> known values and leave 2 blank.</p>
+
+                    <div class="kin-grid">
+                        <div class="field">
+                            <label for="p-u">Initial Velocity (u) [m/s]</label>
+                            <input type="number" id="p-u" step="any" placeholder="Leave blank to solve">
+                        </div>
+                        <div class="field">
+                            <label for="p-v">Final Velocity (v) [m/s]</label>
+                            <input type="number" id="p-v" step="any" placeholder="Leave blank to solve">
+                        </div>
+                        <div class="field">
+                            <label for="p-a">Acceleration (a) [m/s²]</label>
+                            <input type="number" id="p-a" step="any" placeholder="Leave blank to solve">
+                        </div>
+                        <div class="field">
+                            <label for="p-s">Displacement (s) [m]</label>
+                            <input type="number" id="p-s" step="any" placeholder="Leave blank to solve">
+                        </div>
+                        <div class="field">
+                            <label for="p-t">Time (t) [s]</label>
+                            <input type="number" id="p-t" step="any" placeholder="Leave blank to solve">
+                        </div>
+                    </div>
+
+                    <div class="inline-group">
+                        <button type="button" id="btn-kin-reset" class="btn btn-soft">Reset</button>
+                        <button type="button" id="btn-kin-solve" class="btn btn-indigo">Solve Kinematics</button>
+                    </div>
+                    <div id="kin-output" class="output-panel hidden"></div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            Computational Portal &bull; Built by <span>Chimfwembe</span>
+        </footer>
+    </div>
 
     <script src="script.js"></script>
 </body>
