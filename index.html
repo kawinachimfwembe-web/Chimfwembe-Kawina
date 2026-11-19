@@ -1,309 +1,822 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computational Academic Portal</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- Client-side PDF generator library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PapaNotes</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #0F172A;
+      color: #0F172A;
+      font-family: sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    .app-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .app-title {
+      color: #FFFFFF;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #FFFFFF;
+    }
+
+    h3 {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #0F172A;
+    }
+
+    .main-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background-color: #475569;
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-family: sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.92;
+    }
+
+    .nav-active {
+      background-color: #2563EB;
+      color: #FFFFFF;
+    }
+
+    .nav-inactive {
+      background-color: #475569;
+      color: #FFFFFF;
+    }
+
+    .btn-blue {
+      background-color: #2563EB;
+      color: #FFFFFF;
+    }
+
+    .btn-green {
+      background-color: #16A34A;
+      color: #FFFFFF;
+    }
+
+    .btn-orange {
+      background-color: #F59E0B;
+      color: #FFFFFF;
+    }
+
+    .btn-red {
+      background-color: #DC2626;
+      color: #FFFFFF;
+    }
+
+    .btn-grey {
+      background-color: #475569;
+      color: #FFFFFF;
+    }
+
+    .card {
+      background-color: #FFFFFF;
+      color: #0F172A;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      margin-bottom: 16px;
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #0F172A;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="url"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      font-family: sans-serif;
+      font-size: 16px;
+      color: #0F172A;
+      background-color: #FFFFFF;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: #2563EB;
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .note-text {
+      white-space: pre-wrap;
+      margin-bottom: 14px;
+      color: #0F172A;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .info-banner {
+      color: #FFFFFF;
+      margin-bottom: 14px;
+      font-size: 16px;
+    }
+
+    .paper-meta {
+      margin-bottom: 12px;
+      font-weight: bold;
+      color: #0F172A;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .tool-choice-card {
+      background-color: #FFFFFF;
+      color: #0F172A;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .calc-display {
+      width: 100%;
+      padding: 12px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: right;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      background-color: #F8FAFC;
+      color: #0F172A;
+    }
+
+    .calc-pad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .timer-readout {
+      font-size: 36px;
+      font-weight: bold;
+      text-align: center;
+      margin: 16px 0;
+      color: #0F172A;
+    }
+
+    .result-box {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      background-color: #F1F5F9;
+      font-weight: bold;
+      color: #0F172A;
+    }
+
+    #papers-section,
+    #tools-section {
+      display: none;
+    }
+
+    #notes-section {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-    <div class="page-wrapper">
-        <header class="hero-header">
-            <div class="badge">Academic Study &amp; Calculation Suite</div>
-            <h1>Computational Portal</h1>
-            <p>Subject Notes as PDFs, External Past Paper Links &amp; Science/Math Calculators</p>
-        </header>
+  <div class="app-container">
+    <h1 class="app-title">PapaNotes</h1>
 
-        <!-- Three Main Navigation Buttons -->
-        <nav class="primary-nav" aria-label="Main Sections">
-            <button type="button" class="primary-tab-btn active-notes" data-section="notes-section">
-                <span class="tab-icon">📚</span>
-                <span class="tab-label">Notes</span>
-            </button>
-            <button type="button" class="primary-tab-btn" data-section="papers-section">
-                <span class="tab-icon">📄</span>
-                <span class="tab-label">Past Papers</span>
-            </button>
-            <button type="button" class="primary-tab-btn" data-section="tools-section">
-                <span class="tab-icon">🧮</span>
-                <span class="tab-label">Tools</span>
-            </button>
-        </nav>
-
-        <main class="content-area">
-            <!-- =========================================================
-                 SECTION 1: NOTES (Add Any Subject & Access as PDF)
-            ========================================================== -->
-            <section id="notes-section" class="main-section">
-                <div class="section-banner banner-indigo">
-                    <div>
-                        <h2>Subject Notes &amp; PDF Generator</h2>
-                        <p>Create notes for any subject or topic and download/open them as a PDF.</p>
-                    </div>
-                </div>
-
-                <!-- Add New Note Form -->
-                <div class="card add-box">
-                    <h3>Add New Notes</h3>
-                    <form id="add-note-form" class="stacked-form">
-                        <div class="two-col">
-                            <div class="field">
-                                <label for="note-subject">Subject (e.g., Physics, Chemistry, Biology, Civic Ed)</label>
-                                <input type="text" id="note-subject" list="subject-suggestions" placeholder="Type any subject..." required>
-                                <datalist id="subject-suggestions">
-                                    <option value="Physics">
-                                    <option value="Chemistry">
-                                    <option value="Biology">
-                                    <option value="Civic Education">
-                                    <option value="Mathematics">
-                                </datalist>
-                            </div>
-                            <div class="field">
-                                <label for="note-topic">Topic Title</label>
-                                <input type="text" id="note-topic" placeholder="e.g., Newton's Laws of Motion" required>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label for="note-body">Note Content</label>
-                            <textarea id="note-body" rows="5" placeholder="Write your definitions, formulas, key points, or summary here..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-indigo">Save Note &amp; Add to Library</button>
-                    </form>
-                </div>
-
-                <!-- Subject Filter Pills -->
-                <div class="filter-bar" id="notes-subject-filter"></div>
-
-                <!-- Saved Notes Cards -->
-                <div id="notes-list" class="cards-grid"></div>
-            </section>
-
-            <!-- =========================================================
-                 SECTION 2: PAST PAPERS (External Links Manager)
-            ========================================================== -->
-            <section id="papers-section" class="main-section hidden">
-                <div class="section-banner banner-teal">
-                    <div>
-                        <h2>Past Papers Directory</h2>
-                        <p>Add links to past papers hosted on external websites and open them directly.</p>
-                    </div>
-                </div>
-
-                <!-- Add Past Paper Link Form -->
-                <div class="card add-box">
-                    <h3>Add External Past Paper Link</h3>
-                    <form id="add-paper-form" class="stacked-form">
-                        <div class="three-col">
-                            <div class="field">
-                                <label for="paper-subject">Subject</label>
-                                <input type="text" id="paper-subject" placeholder="e.g., Physics" required>
-                            </div>
-                            <div class="field">
-                                <label for="paper-title">Paper Name / Year</label>
-                                <input type="text" id="paper-title" placeholder="e.g., 2024 Paper 2 (GCE)" required>
-                            </div>
-                            <div class="field">
-                                <label for="paper-url">External Website Link (URL)</label>
-                                <input type="url" id="paper-url" placeholder="https://example.com/past-paper.pdf" required>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-teal">Save Past Paper Link</button>
-                    </form>
-                </div>
-
-                <!-- Past Papers List -->
-                <div id="papers-list" class="stack-list"></div>
-            </section>
-
-            <!-- =========================================================
-                 SECTION 3: TOOLS (Chemistry, Math, Physics)
-            ========================================================== -->
-            <section id="tools-section" class="main-section hidden">
-                <div class="section-banner banner-coral">
-                    <div>
-                        <h2>Interactive Calculators &amp; Solvers</h2>
-                        <p>Choose one of the three tools below to solve problems step-by-step.</p>
-                    </div>
-                </div>
-
-                <!-- Three Tool Selector Buttons -->
-                <div class="tool-switcher" role="tablist">
-                    <button type="button" class="tool-pill active" data-tool="tool-chemistry">🧪 Chemistry Balancer &amp; Stoich</button>
-                    <button type="button" class="tool-pill" data-tool="tool-math">📐 Math Solver</button>
-                    <button type="button" class="tool-pill" data-tool="tool-physics">⚡ Physics Kinematics</button>
-                </div>
-
-                <!-- TOOL A: CHEMISTRY -->
-                <div id="tool-chemistry" class="tool-box card">
-                    <h3>Chemistry Equation Balancer &amp; Stoichiometry</h3>
-                    <p class="muted-text">Supports arrows like <code>-&gt;</code>, <code>=</code>, <code>=&gt;</code>, <code>→</code>, and <code>⟶</code>.</p>
-
-                    <div class="field">
-                        <label for="chem-eq-input">Chemical Equation</label>
-                        <div class="inline-group">
-                            <input type="text" id="chem-eq-input" placeholder="e.g., Fe + Cl2 = FeCl3">
-                            <button type="button" id="btn-chem-example" class="btn btn-soft">Load Fe + Cl2</button>
-                        </div>
-                    </div>
-
-                    <button type="button" id="btn-chem-balance" class="btn btn-indigo">Balance Equation</button>
-                    <div id="chem-balance-output" class="output-panel hidden"></div>
-
-                    <div id="chem-stoich-panel" class="sub-box hidden">
-                        <h4>Solve Mass &amp; Gas Volume at RTP (24.0 dm³/mol)</h4>
-                        <div class="two-col">
-                            <div class="field">
-                                <label for="chem-known-species">Known Substance</label>
-                                <select id="chem-known-species"></select>
-                            </div>
-                            <div class="field">
-                                <label for="chem-known-mass">Known Mass (g)</label>
-                                <input type="number" id="chem-known-mass" step="any" placeholder="e.g., 2.8">
-                            </div>
-                        </div>
-                        <button type="button" id="btn-chem-solve" class="btn btn-teal">Calculate Yields</button>
-                        <div id="chem-stoich-output" class="output-panel hidden"></div>
-                    </div>
-
-                    <hr class="divider">
-
-                    <h4>Limiting &amp; Excess Reactant (AMR vs RMR)</h4>
-                    <div class="field">
-                        <label for="lim-eq-input">Reaction with 2 Reactants</label>
-                        <div class="inline-group">
-                            <input type="text" id="lim-eq-input" placeholder="e.g., Mg + O2 -> MgO">
-                            <button type="button" id="btn-lim-example" class="btn btn-soft">Load Mg + O2</button>
-                        </div>
-                    </div>
-                    <div class="two-col">
-                        <div class="field">
-                            <label for="lim-mass-a">Reactant 1 Mass (g)</label>
-                            <input type="number" id="lim-mass-a" step="any" placeholder="e.g., 12">
-                        </div>
-                        <div class="field">
-                            <label for="lim-mass-b">Reactant 2 Mass (g)</label>
-                            <input type="number" id="lim-mass-b" step="any" placeholder="e.g., 8">
-                        </div>
-                    </div>
-                    <button type="button" id="btn-lim-solve" class="btn btn-coral">Find Limiting Reactant</button>
-                    <div id="lim-output" class="output-panel hidden"></div>
-                </div>
-
-                <!-- TOOL B: MATHEMATICS -->
-                <div id="tool-math" class="tool-box card hidden">
-                    <h3>Quadratic Solver (ax² + bx + c = 0)</h3>
-                    <div class="three-col">
-                        <div class="field">
-                            <label for="quad-a">Coefficient a</label>
-                            <input type="number" id="quad-a" step="any" placeholder="a">
-                        </div>
-                        <div class="field">
-                            <label for="quad-b">Coefficient b</label>
-                            <input type="number" id="quad-b" step="any" placeholder="b">
-                        </div>
-                        <div class="field">
-                            <label for="quad-c">Coefficient c</label>
-                            <input type="number" id="quad-c" step="any" placeholder="c">
-                        </div>
-                    </div>
-                    <div class="inline-group">
-                        <button type="button" id="btn-quad-example" class="btn btn-soft">Load Example</button>
-                        <button type="button" id="btn-quad-solve" class="btn btn-indigo">Solve Quadratic</button>
-                    </div>
-                    <div id="quad-output" class="output-panel hidden"></div>
-
-                    <hr class="divider">
-
-                    <h3>Simultaneous Linear Equations (Cramer's Rule)</h3>
-                    <div class="radio-row">
-                        <label class="radio-chip"><input type="radio" name="sim-vars" value="2" checked> 2 Variables (x, y)</label>
-                        <label class="radio-chip"><input type="radio" name="sim-vars" value="3"> 3 Variables (x, y, z)</label>
-                    </div>
-
-                    <div id="sim-2var-grid" class="matrix-block">
-                        <p class="muted-text">a₁x + b₁y = c₁ &nbsp;|&nbsp; a₂x + b₂y = c₂</p>
-                        <div class="three-col">
-                            <input type="number" id="s2-a1" step="any" placeholder="a1">
-                            <input type="number" id="s2-b1" step="any" placeholder="b1">
-                            <input type="number" id="s2-c1" step="any" placeholder="c1">
-                        </div>
-                        <div class="three-col">
-                            <input type="number" id="s2-a2" step="any" placeholder="a2">
-                            <input type="number" id="s2-b2" step="any" placeholder="b2">
-                            <input type="number" id="s2-c2" step="any" placeholder="c2">
-                        </div>
-                    </div>
-
-                    <div id="sim-3var-grid" class="matrix-block hidden">
-                        <p class="muted-text">a₁x + b₁y + c₁z = d₁ (for equations 1, 2, 3)</p>
-                        <div class="four-col">
-                            <input type="number" id="s3-a1" step="any" placeholder="a1">
-                            <input type="number" id="s3-b1" step="any" placeholder="b1">
-                            <input type="number" id="s3-c1" step="any" placeholder="c1">
-                            <input type="number" id="s3-d1" step="any" placeholder="d1">
-                        </div>
-                        <div class="four-col">
-                            <input type="number" id="s3-a2" step="any" placeholder="a2">
-                            <input type="number" id="s3-b2" step="any" placeholder="b2">
-                            <input type="number" id="s3-c2" step="any" placeholder="c2">
-                            <input type="number" id="s3-d2" step="any" placeholder="d2">
-                        </div>
-                        <div class="four-col">
-                            <input type="number" id="s3-a3" step="any" placeholder="a3">
-                            <input type="number" id="s3-b3" step="any" placeholder="b3">
-                            <input type="number" id="s3-c3" step="any" placeholder="c3">
-                            <input type="number" id="s3-d3" step="any" placeholder="d3">
-                        </div>
-                    </div>
-
-                    <button type="button" id="btn-sim-solve" class="btn btn-teal">Solve System</button>
-                    <div id="sim-output" class="output-panel hidden"></div>
-                </div>
-
-                <!-- TOOL C: PHYSICS -->
-                <div id="tool-physics" class="tool-box card hidden">
-                    <h3>Linear Motion Kinematics Engine</h3>
-                    <p class="muted-text">Enter <strong>any 3</strong> known values and leave 2 blank.</p>
-
-                    <div class="kin-grid">
-                        <div class="field">
-                            <label for="p-u">Initial Velocity (u) [m/s]</label>
-                            <input type="number" id="p-u" step="any" placeholder="Leave blank to solve">
-                        </div>
-                        <div class="field">
-                            <label for="p-v">Final Velocity (v) [m/s]</label>
-                            <input type="number" id="p-v" step="any" placeholder="Leave blank to solve">
-                        </div>
-                        <div class="field">
-                            <label for="p-a">Acceleration (a) [m/s²]</label>
-                            <input type="number" id="p-a" step="any" placeholder="Leave blank to solve">
-                        </div>
-                        <div class="field">
-                            <label for="p-s">Displacement (s) [m]</label>
-                            <input type="number" id="p-s" step="any" placeholder="Leave blank to solve">
-                        </div>
-                        <div class="field">
-                            <label for="p-t">Time (t) [s]</label>
-                            <input type="number" id="p-t" step="any" placeholder="Leave blank to solve">
-                        </div>
-                    </div>
-
-                    <div class="inline-group">
-                        <button type="button" id="btn-kin-reset" class="btn btn-soft">Reset</button>
-                        <button type="button" id="btn-kin-solve" class="btn btn-indigo">Solve Kinematics</button>
-                    </div>
-                    <div id="kin-output" class="output-panel hidden"></div>
-                </div>
-            </section>
-        </main>
-
-        <footer class="site-footer">
-            Computational Portal &bull; Built by <span>Chimfwembe</span>
-        </footer>
+    <!-- MAIN NAVIGATION -->
+    <div class="main-nav">
+      <button type="button" id="tab-btn-notes" class="nav-active" onclick="showTab('notes')">Notes</button>
+      <button type="button" id="tab-btn-papers" class="nav-inactive" onclick="showTab('papers')">Past Papers</button>
+      <button type="button" id="tab-btn-tools" class="nav-inactive" onclick="showTab('tools')">Tools</button>
     </div>
 
-    <script src="script.js"></script>
+    <!-- TAB 1: NOTES -->
+    <section id="notes-section">
+      <h2>Notes</h2>
+
+      <!-- A) Filter buttons row -->
+      <div class="filter-row">
+        <button type="button" id="filter-All" class="btn-blue" onclick="filterNotes('All')">All</button>
+        <button type="button" id="filter-Physics" class="btn-grey" onclick="filterNotes('Physics')">Physics</button>
+        <button type="button" id="filter-Chemistry" class="btn-grey" onclick="filterNotes('Chemistry')">Chemistry</button>
+        <button type="button" id="filter-Biology" class="btn-grey" onclick="filterNotes('Biology')">Biology</button>
+        <button type="button" id="filter-Civic Ed" class="btn-grey" onclick="filterNotes('Civic Ed')">Civic Ed</button>
+      </div>
+
+      <!-- B) Add Note Form -->
+      <div class="card">
+        <h3>Add Note</h3>
+        <form id="note-form" onsubmit="saveNote(event)">
+          <div class="form-group">
+            <label for="note-subject">Subject</label>
+            <select id="note-subject" required>
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Biology">Biology</option>
+              <option value="Civic Ed">Civic Ed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="note-topic">Topic Title</label>
+            <input type="text" id="note-topic" placeholder="Enter topic title" required />
+          </div>
+          <div class="form-group">
+            <label for="note-content">Note Content</label>
+            <textarea id="note-content" placeholder="Write your notes here..." required></textarea>
+          </div>
+          <button type="submit" class="btn-green">Save Note</button>
+        </form>
+      </div>
+
+      <!-- C) Notes List -->
+      <div id="notes-list"></div>
+    </section>
+
+    <!-- TAB 2: PAST PAPERS -->
+    <section id="papers-section">
+      <h2>Past Papers</h2>
+      <p class="info-banner">Papers link to external official sites. Solutions are hosted here.</p>
+
+      <div class="card">
+        <h3>Add Paper</h3>
+        <form id="paper-form" onsubmit="addPaper(event)">
+          <div class="form-group">
+            <label for="paper-subject">Subject</label>
+            <select id="paper-subject" required>
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Biology">Biology</option>
+              <option value="Civic Ed">Civic Ed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="paper-year">Year</label>
+            <input type="text" id="paper-year" placeholder="e.g., 2023" required />
+          </div>
+          <div class="form-group">
+            <label for="paper-no">Paper No.</label>
+            <input type="text" id="paper-no" placeholder="e.g., Paper 1" required />
+          </div>
+          <div class="form-group">
+            <label for="paper-link">Paper Link (URL)</label>
+            <input type="url" id="paper-link" placeholder="https://example.com" value="https://example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="solutions-link">Solutions Link (URL)</label>
+            <input type="url" id="solutions-link" placeholder="https://example.com/solutions" value="https://example.com" required />
+          </div>
+          <button type="submit" class="btn-green">Add Paper</button>
+        </form>
+      </div>
+
+      <div id="papers-list"></div>
+    </section>
+
+    <!-- TAB 3: TOOLS -->
+    <section id="tools-section">
+      <h2>Tools</h2>
+
+      <div id="tools-menu" class="tools-grid">
+        <div class="tool-choice-card" onclick="openTool('calculator')">
+          <div>
+            <h3>Calculator</h3>
+            <p>Basic arithmetic with +, -, *, / and =.</p>
+          </div>
+          <button type="button" class="btn-blue" onclick="event.stopPropagation(); openTool('calculator')">Open Calculator</button>
+        </div>
+
+        <div class="tool-choice-card" onclick="openTool('converter')">
+          <div>
+            <h3>Unit Converter</h3>
+            <p>Convert common length and mass units.</p>
+          </div>
+          <button type="button" class="btn-green" onclick="event.stopPropagation(); openTool('converter')">Open Unit Converter</button>
+        </div>
+
+        <div class="tool-choice-card" onclick="openTool('timer')">
+          <div>
+            <h3>Study Timer</h3>
+            <p>25:00 countdown timer with Start, Pause, and Reset.</p>
+          </div>
+          <button type="button" class="btn-orange" onclick="event.stopPropagation(); openTool('timer')">Open Study Timer</button>
+        </div>
+      </div>
+
+      <!-- Tool 1: Calculator -->
+      <div id="tool-calculator" class="card" style="display: none;">
+        <div class="btn-row" style="margin-bottom: 14px;">
+          <button type="button" class="btn-grey" onclick="backToTools()">Back to Tools</button>
+        </div>
+        <h3>Calculator</h3>
+        <input type="text" id="calc-input" class="calc-display" placeholder="0" />
+        <div class="calc-pad">
+          <button type="button" class="btn-blue" onclick="appendCalc('+')">+</button>
+          <button type="button" class="btn-blue" onclick="appendCalc('-')">-</button>
+          <button type="button" class="btn-blue" onclick="appendCalc('*')">*</button>
+          <button type="button" class="btn-blue" onclick="appendCalc('/')">/</button>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn-green" onclick="calculateExpr()">=</button>
+          <button type="button" class="btn-red" onclick="clearCalc()">Clear</button>
+        </div>
+        <div id="calc-result" class="result-box">Result: 0</div>
+      </div>
+
+      <!-- Tool 2: Unit Converter -->
+      <div id="tool-converter" class="card" style="display: none;">
+        <div class="btn-row" style="margin-bottom: 14px;">
+          <button type="button" class="btn-grey" onclick="backToTools()">Back to Tools</button>
+        </div>
+        <h3>Unit Converter</h3>
+        <div class="form-group">
+          <label for="conversion-type">Conversion</label>
+          <select id="conversion-type">
+            <option value="cm_to_m">cm to m</option>
+            <option value="m_to_cm">m to cm</option>
+            <option value="g_to_kg">g to kg</option>
+            <option value="kg_to_g">kg to g</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="convert-value">Value</label>
+          <input type="number" id="convert-value" step="any" placeholder="Enter value" />
+        </div>
+        <button type="button" class="btn-green" onclick="runConversion()">Convert</button>
+        <div id="convert-result" class="result-box">Converted value will appear here.</div>
+      </div>
+
+      <!-- Tool 3: Study Timer -->
+      <div id="tool-timer" class="card" style="display: none;">
+        <div class="btn-row" style="margin-bottom: 14px;">
+          <button type="button" class="btn-grey" onclick="backToTools()">Back to Tools</button>
+        </div>
+        <h3>Study Timer</h3>
+        <div id="timer-display" class="timer-readout">25:00</div>
+        <div class="btn-row">
+          <button type="button" class="btn-green" onclick="startTimer()">Start</button>
+          <button type="button" class="btn-orange" onclick="pauseTimer()">Pause</button>
+          <button type="button" class="btn-red" onclick="resetTimer()">Reset</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const NOTES_KEY = "papanotes_notes_v1";
+    const PAPERS_KEY = "papanotes_papers_v1";
+    let currentFilter = "All";
+
+    const defaultNotes = [
+      {
+        id: "note-1",
+        subject: "Physics",
+        topic: "Equations of Linear Motion",
+        content: "v = u + at\ns = ut + 1/2at^2\nv^2 = u^2 + 2as\nwhere u = initial velocity, v = final velocity, a = acceleration, s = displacement, t = time."
+      },
+      {
+        id: "note-2",
+        subject: "Chemistry",
+        topic: "Moles & Gas Volume",
+        content: "Number of moles (n) = Mass (m) / Molar Mass (M).\nAt room temperature and pressure (RTP), 1 mole of gas occupies 24.0 dm^3."
+      }
+    ];
+
+    const defaultPapers = [
+      {
+        id: "paper-1",
+        subject: "Chemistry",
+        year: "2023",
+        paperNo: "Paper 1",
+        paperUrl: "https://example.com",
+        solutionsUrl: "https://example.com"
+      },
+      {
+        id: "paper-2",
+        subject: "Physics",
+        year: "2023",
+        paperNo: "Paper 1",
+        paperUrl: "https://example.com",
+        solutionsUrl: "https://example.com"
+      }
+    ];
+
+    function showTab(tabName) {
+      const notesSec = document.getElementById("notes-section");
+      const papersSec = document.getElementById("papers-section");
+      const toolsSec = document.getElementById("tools-section");
+
+      const btnNotes = document.getElementById("tab-btn-notes");
+      const btnPapers = document.getElementById("tab-btn-papers");
+      const btnTools = document.getElementById("tab-btn-tools");
+
+      notesSec.style.display = "none";
+      papersSec.style.display = "none";
+      toolsSec.style.display = "none";
+
+      btnNotes.className = "nav-inactive";
+      btnPapers.className = "nav-inactive";
+      btnTools.className = "nav-inactive";
+
+      if (tabName === "notes") {
+        notesSec.style.display = "block";
+        btnNotes.className = "nav-active";
+      } else if (tabName === "papers") {
+        papersSec.style.display = "block";
+        btnPapers.className = "nav-active";
+      } else if (tabName === "tools") {
+        toolsSec.style.display = "block";
+        btnTools.className = "nav-active";
+        backToTools();
+      }
+    }
+
+    function getNotes() {
+      const raw = localStorage.getItem(NOTES_KEY);
+      if (!raw) {
+        localStorage.setItem(NOTES_KEY, JSON.stringify(defaultNotes));
+        return [...defaultNotes];
+      }
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        return [...defaultNotes];
+      }
+    }
+
+    function setNotes(notes) {
+      localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+    }
+
+    function filterNotes(subject) {
+      currentFilter = subject;
+      const subjects = ["All", "Physics", "Chemistry", "Biology", "Civic Ed"];
+      subjects.forEach((s) => {
+        const btn = document.getElementById("filter-" + s);
+        if (btn) {
+          btn.className = s === subject ? "btn-blue" : "btn-grey";
+        }
+      });
+      renderNotes();
+    }
+
+    function saveNote(event) {
+      event.preventDefault();
+      const subjectEl = document.getElementById("note-subject");
+      const topicEl = document.getElementById("note-topic");
+      const contentEl = document.getElementById("note-content");
+
+      const newNote = {
+        id: "note-" + Date.now(),
+        subject: subjectEl.value,
+        topic: topicEl.value.trim(),
+        content: contentEl.value.trim()
+      };
+
+      const notes = getNotes();
+      notes.unshift(newNote);
+      setNotes(notes);
+
+      topicEl.value = "";
+      contentEl.value = "";
+      renderNotes();
+    }
+
+    function deleteNote(noteId) {
+      const notes = getNotes().filter((n) => n.id !== noteId);
+      setNotes(notes);
+      renderNotes();
+    }
+
+    function downloadSingleNotePdf(noteId) {
+      const note = getNotes().find((n) => n.id === noteId);
+      if (!note) return;
+
+      if (window.jspdf && window.jspdf.jsPDF) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFontSize(18);
+        doc.text(note.topic, 14, 20);
+        doc.setFontSize(12);
+        doc.text("Subject: " + note.subject, 14, 30);
+        doc.setFontSize(11);
+        const lines = doc.splitTextToSize(note.content, 180);
+        doc.text(lines, 14, 42);
+        const fileName = (note.subject + "-" + note.topic).replace(/[^a-z0-9]/gi, "_").toLowerCase() + ".pdf";
+        doc.save(fileName);
+      } else {
+        const printWin = window.open("", "_blank");
+        printWin.document.write(
+          "<html><head><title>" + escapeHtml(note.topic) + "</title></head><body>" +
+          "<h1>" + escapeHtml(note.topic) + "</h1>" +
+          "<p><strong>Subject:</strong> " + escapeHtml(note.subject) + "</p>" +
+          "<pre style='font-family:sans-serif;white-space:pre-wrap;'>" + escapeHtml(note.content) + "</pre>" +
+          "</body></html>"
+        );
+        printWin.document.close();
+        printWin.focus();
+        printWin.print();
+      }
+    }
+
+    function renderNotes() {
+      const listEl = document.getElementById("notes-list");
+      const notes = getNotes();
+      const filtered = currentFilter === "All"
+        ? notes
+        : notes.filter((n) => n.subject === currentFilter);
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<div class="card">No notes found for ' + escapeHtml(currentFilter) + '.</div>';
+        return;
+      }
+
+      listEl.innerHTML = filtered.map((note) => (
+        '<div class="card" data-subject="' + escapeHtml(note.subject) + '">' +
+          '<span class="badge">' + escapeHtml(note.subject) + '</span>' +
+          '<h3>' + escapeHtml(note.topic) + '</h3>' +
+          '<p class="note-text">' + escapeHtml(note.content) + '</p>' +
+          '<div class="btn-row">' +
+            '<button type="button" class="btn-blue" onclick="downloadSingleNotePdf(\'' + escapeAttr(note.id) + '\')">Download PDF</button>' +
+            '<button type="button" class="btn-red" onclick="deleteNote(\'' + escapeAttr(note.id) + '\')">Delete</button>' +
+          '</div>' +
+        '</div>'
+      )).join("");
+    }
+
+    function getPapers() {
+      const raw = localStorage.getItem(PAPERS_KEY);
+      if (!raw) {
+        localStorage.setItem(PAPERS_KEY, JSON.stringify(defaultPapers));
+        return [...defaultPapers];
+      }
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        return [...defaultPapers];
+      }
+    }
+
+    function setPapers(papers) {
+      localStorage.setItem(PAPERS_KEY, JSON.stringify(papers));
+    }
+
+    function addPaper(event) {
+      event.preventDefault();
+      const subjectEl = document.getElementById("paper-subject");
+      const yearEl = document.getElementById("paper-year");
+      const paperNoEl = document.getElementById("paper-no");
+      const paperLinkEl = document.getElementById("paper-link");
+      const solutionsLinkEl = document.getElementById("solutions-link");
+
+      const paper = {
+        id: "paper-" + Date.now(),
+        subject: subjectEl.value,
+        year: yearEl.value.trim(),
+        paperNo: paperNoEl.value.trim(),
+        paperUrl: sanitizeUrl(paperLinkEl.value.trim()),
+        solutionsUrl: sanitizeUrl(solutionsLinkEl.value.trim())
+      };
+
+      const papers = getPapers();
+      papers.unshift(paper);
+      setPapers(papers);
+
+      yearEl.value = "";
+      paperNoEl.value = "";
+      paperLinkEl.value = "https://example.com";
+      solutionsLinkEl.value = "https://example.com";
+      renderPapers();
+    }
+
+    function renderPapers() {
+      const listEl = document.getElementById("papers-list");
+      const papers = getPapers();
+
+      if (papers.length === 0) {
+        listEl.innerHTML = '<div class="card">No past papers added yet.</div>';
+        return;
+      }
+
+      listEl.innerHTML = papers.map((p) => (
+        '<div class="card">' +
+          '<p class="paper-meta">Subject: ' + escapeHtml(p.subject) + ' | Year: ' + escapeHtml(p.year) + ' | Paper No.: ' + escapeHtml(p.paperNo) + '</p>' +
+          '<div class="btn-row">' +
+            '<button type="button" class="btn-blue" onclick="window.open(\'' + escapeAttr(sanitizeUrl(p.paperUrl)) + '\', \'_blank\', \'noopener,noreferrer\')">View Official Paper</button>' +
+            '<button type="button" class="btn-green" onclick="window.open(\'' + escapeAttr(sanitizeUrl(p.solutionsUrl)) + '\', \'_blank\', \'noopener,noreferrer\')">View My Solutions</button>' +
+          '</div>' +
+        '</div>'
+      )).join("");
+    }
+
+    function openTool(toolName) {
+      document.getElementById("tools-menu").style.display = "none";
+      document.getElementById("tool-calculator").style.display = "none";
+      document.getElementById("tool-converter").style.display = "none";
+      document.getElementById("tool-timer").style.display = "none";
+
+      if (toolName === "calculator") {
+        document.getElementById("tool-calculator").style.display = "block";
+      } else if (toolName === "converter") {
+        document.getElementById("tool-converter").style.display = "block";
+      } else if (toolName === "timer") {
+        document.getElementById("tool-timer").style.display = "block";
+      }
+    }
+
+    function backToTools() {
+      document.getElementById("tool-calculator").style.display = "none";
+      document.getElementById("tool-converter").style.display = "none";
+      document.getElementById("tool-timer").style.display = "none";
+      document.getElementById("tools-menu").style.display = "grid";
+    }
+
+    function appendCalc(op) {
+      const input = document.getElementById("calc-input");
+      input.value = (input.value || "") + op;
+      input.focus();
+    }
+
+    function clearCalc() {
+      document.getElementById("calc-input").value = "";
+      document.getElementById("calc-result").textContent = "Result: 0";
+    }
+
+    function calculateExpr() {
+      const expr = document.getElementById("calc-input").value.trim();
+      const resultEl = document.getElementById("calc-result");
+      if (!expr) {
+        resultEl.textContent = "Result: 0";
+        return;
+      }
+      if (!/^[0-9+\-*/().\s]+$/.test(expr)) {
+        resultEl.textContent = "Invalid characters in expression.";
+        return;
+      }
+      try {
+        const val = Function('"use strict"; return (' + expr + ')')();
+        if (typeof val !== "number" || !Number.isFinite(val)) {
+          resultEl.textContent = "Math error.";
+        } else {
+          resultEl.textContent = "Result: " + val;
+        }
+      } catch (e) {
+        resultEl.textContent = "Invalid expression.";
+      }
+    }
+
+    function runConversion() {
+      const type = document.getElementById("conversion-type").value;
+      const val = parseFloat(document.getElementById("convert-value").value);
+      const out = document.getElementById("convert-result");
+
+      if (Number.isNaN(val)) {
+        out.textContent = "Please enter a valid number.";
+        return;
+      }
+
+      if (type === "cm_to_m") {
+        out.textContent = val + " cm = " + (val / 100) + " m";
+      } else if (type === "m_to_cm") {
+        out.textContent = val + " m = " + (val * 100) + " cm";
+      } else if (type === "g_to_kg") {
+        out.textContent = val + " g = " + (val / 1000) + " kg";
+      } else if (type === "kg_to_g") {
+        out.textContent = val + " kg = " + (val * 1000) + " g";
+      }
+    }
+
+    let timerSeconds = 25 * 60;
+    let timerInterval = null;
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timerSeconds / 60);
+      const secs = timerSeconds % 60;
+      const mm = String(mins).padStart(2, "0");
+      const ss = String(secs).padStart(2, "0");
+      document.getElementById("timer-display").textContent = mm + ":" + ss;
+    }
+
+    function startTimer() {
+      if (timerInterval !== null) return;
+      timerInterval = setInterval(() => {
+        if (timerSeconds > 0) {
+          timerSeconds -= 1;
+          updateTimerDisplay();
+        } else {
+          pauseTimer();
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      if (timerInterval !== null) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      timerSeconds = 25 * 60;
+      updateTimerDisplay();
+    }
+
+    function sanitizeUrl(url) {
+      if (/^https?:\/\//i.test(url)) return url;
+      return "https://example.com";
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function escapeAttr(str) {
+      return String(str).replace(/'/g, "\\'").replace(/"/g, "&quot;");
+    }
+
+    showTab("notes");
+    filterNotes("All");
+    renderPapers();
+    updateTimerDisplay();
+  </script>
 </body>
 </html>
