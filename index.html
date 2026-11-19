@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PapaNotes</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     * {
       box-sizing: border-box;
@@ -13,104 +12,156 @@
     }
 
     body {
-      background-color: #0F172A;
-      color: #0F172A;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(255,255,255,0.35) 0%, transparent 50%),
+        radial-gradient(circle at 10% 90%, rgba(168,85,247,0.5) 0%, transparent 55%),
+        linear-gradient(160deg, #4C1D95 0%, #7C3AED 25%, #A855F7 45%, #D946EF 65%, #EC4899 85%, #F472B6 100%);
+      background-attachment: fixed;
+      color: #1E1B4B;
       font-family: sans-serif;
       font-size: 16px;
       line-height: 1.5;
       padding: 20px;
+      min-height: 100vh;
     }
 
-    .app-container {
+    .container {
       max-width: 900px;
       margin: 0 auto;
     }
 
-    .app-title {
+    .header-box {
+      text-align: center;
+      margin-bottom: 28px;
+      padding: 16px 20px;
+      background: transparent;
+    }
+
+    .poster-badge {
+      display: inline-block;
+      background: rgba(236,72,153,0.85);
       color: #FFFFFF;
-      font-size: 28px;
+      font-size: 14px;
       font-weight: bold;
-      margin-bottom: 16px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      margin-bottom: 10px;
+    }
+
+    .header-box h1 {
+      font-size: 36px;
+      font-weight: bold;
+      color: #FFFFFF;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.35);
+      margin-bottom: 6px;
+    }
+
+    .header-box p {
+      font-size: 16px;
+      color: #FFFFFF;
     }
 
     h2 {
       font-size: 22px;
       font-weight: bold;
-      margin-bottom: 12px;
       color: #FFFFFF;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.35);
+      margin-bottom: 14px;
     }
 
     h3 {
       font-size: 22px;
       font-weight: bold;
+      color: #1E1B4B;
       margin-bottom: 10px;
-      color: #0F172A;
     }
 
-    .main-nav {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      background-color: #475569;
-      color: #FFFFFF;
+    button,
+    a.btn-link {
+      display: inline-block;
+      text-decoration: none;
       border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
       font-family: sans-serif;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
     }
 
-    button:hover {
-      opacity: 0.92;
+    button:hover,
+    a.btn-link:hover {
+      opacity: 0.94;
     }
 
-    .nav-active {
-      background-color: #2563EB;
+    .btn-primary {
+      background-color: #EC4899;
       color: #FFFFFF;
     }
 
-    .nav-inactive {
-      background-color: #475569;
-      color: #FFFFFF;
+    .btn-secondary {
+      background-color: #FFFFFF;
+      color: #6D28D9;
+      border: 2px solid #7C3AED;
     }
 
-    .btn-blue {
-      background-color: #2563EB;
+    .filter-active {
+      background-color: #7C3AED;
       color: #FFFFFF;
+      border: 2px solid #7C3AED;
     }
 
-    .btn-green {
-      background-color: #16A34A;
-      color: #FFFFFF;
+    .filter-inactive {
+      background-color: #FFFFFF;
+      color: #6D28D9;
+      border: 2px solid #7C3AED;
     }
 
-    .btn-orange {
-      background-color: #F59E0B;
-      color: #FFFFFF;
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 20px;
     }
 
-    .btn-red {
-      background-color: #DC2626;
-      color: #FFFFFF;
+    .home-card {
+      background-color: #FFFFFF;
+      color: #1E1B4B;
+      border-radius: 16px;
+      padding: 24px 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
     }
 
-    .btn-grey {
-      background-color: #475569;
-      color: #FFFFFF;
+    .home-icon {
+      font-size: 38px;
+      line-height: 1.2;
+    }
+
+    .home-card-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #1E1B4B;
     }
 
     .card {
       background-color: #FFFFFF;
-      color: #0F172A;
-      border-radius: 12px;
+      color: #1E1B4B;
+      border-radius: 16px;
       padding: 20px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      margin-bottom: 16px;
+    }
+
+    .top-bar {
       margin-bottom: 16px;
     }
 
@@ -121,683 +172,948 @@
       margin-bottom: 16px;
     }
 
-    .form-group {
-      margin-bottom: 12px;
-    }
-
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 6px;
-      color: #0F172A;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="url"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #CBD5E1;
-      border-radius: 8px;
-      font-family: sans-serif;
-      font-size: 16px;
-      color: #0F172A;
-      background-color: #FFFFFF;
-    }
-
-    textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
     .badge {
       display: inline-block;
-      background-color: #2563EB;
+      background: rgba(236,72,153,0.85);
       color: #FFFFFF;
       font-size: 14px;
       font-weight: bold;
-      padding: 4px 10px;
-      border-radius: 8px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
       margin-bottom: 8px;
     }
 
-    .note-text {
-      white-space: pre-wrap;
-      margin-bottom: 14px;
-      color: #0F172A;
+    .paper-line {
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #1E1B4B;
     }
 
     .btn-row {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-    }
-
-    .info-banner {
-      color: #FFFFFF;
-      margin-bottom: 14px;
-      font-size: 16px;
-    }
-
-    .paper-meta {
-      margin-bottom: 12px;
-      font-weight: bold;
-      color: #0F172A;
+      margin-top: 10px;
     }
 
     .tools-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
     }
 
-    .tool-choice-card {
+    .tool-card {
       background-color: #FFFFFF;
-      color: #0F172A;
-      border-radius: 12px;
+      color: #1E1B4B;
+      border-radius: 16px;
       padding: 20px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
       cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      gap: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
     }
 
-    .calc-display {
-      width: 100%;
-      padding: 12px;
-      font-size: 20px;
-      font-weight: bold;
-      text-align: right;
-      border: 1px solid #CBD5E1;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      background-color: #F8FAFC;
-      color: #0F172A;
-    }
-
-    .calc-pad {
+    .form-grid-3 {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 12px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
     }
 
-    .timer-readout {
-      font-size: 36px;
+    label {
+      display: block;
       font-weight: bold;
-      text-align: center;
-      margin: 16px 0;
-      color: #0F172A;
+      margin-bottom: 6px;
+      color: #1E1B4B;
     }
 
-    .result-box {
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 8px;
-      background-color: #F1F5F9;
+    input,
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #DDD6FE;
+      border-radius: 10px;
+      font-family: sans-serif;
+      font-size: 16px;
+      color: #1E1B4B;
+      background-color: #FFFFFF;
+    }
+
+    .output-box {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 12px;
+      background-color: #FAF5FF;
+      border: 2px solid #7C3AED;
+      color: #1E1B4B;
       font-weight: bold;
-      color: #0F172A;
+      white-space: pre-line;
     }
 
-    #papers-section,
-    #tools-section {
+    .error-text {
+      color: #BE185D;
+      font-weight: bold;
+    }
+
+    #home-page {
+      display: block;
+    }
+
+    #notes-page,
+    #papers-page,
+    #tools-page {
       display: none;
     }
 
-    #notes-section {
-      display: block;
+    @media (max-width: 700px) {
+      .home-grid,
+      .tools-grid,
+      .form-grid-2,
+      .form-grid-3 {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="app-container">
-    <h1 class="app-title">PapaNotes</h1>
-
-    <!-- MAIN NAVIGATION -->
-    <div class="main-nav">
-      <button type="button" id="tab-btn-notes" class="nav-active" onclick="showTab('notes')">Notes</button>
-      <button type="button" id="tab-btn-papers" class="nav-inactive" onclick="showTab('papers')">Past Papers</button>
-      <button type="button" id="tab-btn-tools" class="nav-inactive" onclick="showTab('tools')">Tools</button>
+  <div class="container">
+    <div class="header-box">
+      <div class="poster-badge">Learn Smarter</div>
+      <h1>PapaNotes</h1>
+      <p>Notes, Past Papers &amp; Tools - Made by a senior, for juniors</p>
     </div>
 
-    <!-- TAB 1: NOTES -->
-    <section id="notes-section">
+    <!-- 1. HOMEPAGE -->
+    <div id="home-page">
+      <div class="home-grid">
+        <div class="home-card" onclick="openPage('notes')">
+          <div class="home-icon">📚</div>
+          <div class="home-card-title">Notes</div>
+          <button type="button" class="btn-primary">Open Notes</button>
+        </div>
+
+        <div class="home-card" onclick="openPage('papers')">
+          <div class="home-icon">📄</div>
+          <div class="home-card-title">Past Papers</div>
+          <button type="button" class="btn-secondary">Open Past Papers</button>
+        </div>
+
+        <div class="home-card" onclick="openPage('tools')">
+          <div class="home-icon">🛠️</div>
+          <div class="home-card-title">Tools</div>
+          <button type="button" class="btn-primary">Open Tools</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. NOTES PAGE -->
+    <div id="notes-page">
+      <div class="top-bar">
+        <button type="button" class="btn-secondary" onclick="openPage('home')">← Back to Home</button>
+      </div>
       <h2>Notes</h2>
 
-      <!-- A) Filter buttons row -->
       <div class="filter-row">
-        <button type="button" id="filter-All" class="btn-blue" onclick="filterNotes('All')">All</button>
-        <button type="button" id="filter-Physics" class="btn-grey" onclick="filterNotes('Physics')">Physics</button>
-        <button type="button" id="filter-Chemistry" class="btn-grey" onclick="filterNotes('Chemistry')">Chemistry</button>
-        <button type="button" id="filter-Biology" class="btn-grey" onclick="filterNotes('Biology')">Biology</button>
-        <button type="button" id="filter-Civic Ed" class="btn-grey" onclick="filterNotes('Civic Ed')">Civic Ed</button>
+        <button type="button" id="filter-btn-All" class="filter-active" onclick="filterNotes('All')">All</button>
+        <button type="button" id="filter-btn-Physics" class="filter-inactive" onclick="filterNotes('Physics')">Physics</button>
+        <button type="button" id="filter-btn-Chemistry" class="filter-inactive" onclick="filterNotes('Chemistry')">Chemistry</button>
+        <button type="button" id="filter-btn-Biology" class="filter-inactive" onclick="filterNotes('Biology')">Biology</button>
+        <button type="button" id="filter-btn-Civic Ed" class="filter-inactive" onclick="filterNotes('Civic Ed')">Civic Ed</button>
       </div>
 
-      <!-- B) Add Note Form -->
-      <div class="card">
-        <h3>Add Note</h3>
-        <form id="note-form" onsubmit="saveNote(event)">
-          <div class="form-group">
-            <label for="note-subject">Subject</label>
-            <select id="note-subject" required>
-              <option value="Physics">Physics</option>
-              <option value="Chemistry">Chemistry</option>
-              <option value="Biology">Biology</option>
-              <option value="Civic Ed">Civic Ed</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="note-topic">Topic Title</label>
-            <input type="text" id="note-topic" placeholder="Enter topic title" required />
-          </div>
-          <div class="form-group">
-            <label for="note-content">Note Content</label>
-            <textarea id="note-content" placeholder="Write your notes here..." required></textarea>
-          </div>
-          <button type="submit" class="btn-green">Save Note</button>
-        </form>
-      </div>
-
-      <!-- C) Notes List -->
       <div id="notes-list"></div>
-    </section>
+    </div>
 
-    <!-- TAB 2: PAST PAPERS -->
-    <section id="papers-section">
-      <h2>Past Papers</h2>
-      <p class="info-banner">Papers link to external official sites. Solutions are hosted here.</p>
-
-      <div class="card">
-        <h3>Add Paper</h3>
-        <form id="paper-form" onsubmit="addPaper(event)">
-          <div class="form-group">
-            <label for="paper-subject">Subject</label>
-            <select id="paper-subject" required>
-              <option value="Physics">Physics</option>
-              <option value="Chemistry">Chemistry</option>
-              <option value="Biology">Biology</option>
-              <option value="Civic Ed">Civic Ed</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="paper-year">Year</label>
-            <input type="text" id="paper-year" placeholder="e.g., 2023" required />
-          </div>
-          <div class="form-group">
-            <label for="paper-no">Paper No.</label>
-            <input type="text" id="paper-no" placeholder="e.g., Paper 1" required />
-          </div>
-          <div class="form-group">
-            <label for="paper-link">Paper Link (URL)</label>
-            <input type="url" id="paper-link" placeholder="https://example.com" value="https://example.com" required />
-          </div>
-          <div class="form-group">
-            <label for="solutions-link">Solutions Link (URL)</label>
-            <input type="url" id="solutions-link" placeholder="https://example.com/solutions" value="https://example.com" required />
-          </div>
-          <button type="submit" class="btn-green">Add Paper</button>
-        </form>
+    <!-- 3. PAST PAPERS PAGE -->
+    <div id="papers-page">
+      <div class="top-bar">
+        <button type="button" class="btn-secondary" onclick="openPage('home')">← Back to Home</button>
       </div>
+      <h2>Past Papers</h2>
 
       <div id="papers-list"></div>
-    </section>
+    </div>
 
-    <!-- TAB 3: TOOLS -->
-    <section id="tools-section">
+    <!-- 4. TOOLS PAGE -->
+    <div id="tools-page">
+      <div class="top-bar">
+        <button type="button" class="btn-secondary" onclick="openPage('home')">← Back to Home</button>
+      </div>
       <h2>Tools</h2>
 
-      <div id="tools-menu" class="tools-grid">
-        <div class="tool-choice-card" onclick="openTool('calculator')">
+      <div id="tools-grid" class="tools-grid">
+        <div class="tool-card" onclick="openTool('stoich')">
           <div>
-            <h3>Calculator</h3>
-            <p>Basic arithmetic with +, -, *, / and =.</p>
+            <h3>Stoichiometry Calculator</h3>
+            <p>Balance equations, moles/mass, gas volume, concentration, limiting reactant &amp; % yield.</p>
           </div>
-          <button type="button" class="btn-blue" onclick="event.stopPropagation(); openTool('calculator')">Open Calculator</button>
+          <button type="button" class="btn-primary" onclick="event.stopPropagation(); openTool('stoich')">Open</button>
         </div>
 
-        <div class="tool-choice-card" onclick="openTool('converter')">
+        <div class="tool-card" onclick="openTool('math')">
           <div>
-            <h3>Unit Converter</h3>
-            <p>Convert common length and mass units.</p>
+            <h3>Math Solver</h3>
+            <p>Quadratic equation ax² + bx + c = 0.</p>
           </div>
-          <button type="button" class="btn-green" onclick="event.stopPropagation(); openTool('converter')">Open Unit Converter</button>
+          <button type="button" class="btn-secondary" onclick="event.stopPropagation(); openTool('math')">Open</button>
         </div>
 
-        <div class="tool-choice-card" onclick="openTool('timer')">
+        <div class="tool-card" onclick="openTool('physics')">
           <div>
-            <h3>Study Timer</h3>
-            <p>25:00 countdown timer with Start, Pause, and Reset.</p>
+            <h3>Physics Solver</h3>
+            <p>Linear motion kinematics (enter 3 of u, v, a, s, t).</p>
           </div>
-          <button type="button" class="btn-orange" onclick="event.stopPropagation(); openTool('timer')">Open Study Timer</button>
+          <button type="button" class="btn-primary" onclick="event.stopPropagation(); openTool('physics')">Open</button>
         </div>
       </div>
 
-      <!-- Tool 1: Calculator -->
-      <div id="tool-calculator" class="card" style="display: none;">
-        <div class="btn-row" style="margin-bottom: 14px;">
-          <button type="button" class="btn-grey" onclick="backToTools()">Back to Tools</button>
+      <!-- Tool 1: Stoichiometry Calculator (All 5 Modes) -->
+      <div id="tool-stoich" class="card" style="display: none;">
+        <div class="top-bar">
+          <button type="button" class="btn-secondary" onclick="backToTools()">← Back to Tools</button>
         </div>
-        <h3>Calculator</h3>
-        <input type="text" id="calc-input" class="calc-display" placeholder="0" />
-        <div class="calc-pad">
-          <button type="button" class="btn-blue" onclick="appendCalc('+')">+</button>
-          <button type="button" class="btn-blue" onclick="appendCalc('-')">-</button>
-          <button type="button" class="btn-blue" onclick="appendCalc('*')">*</button>
-          <button type="button" class="btn-blue" onclick="appendCalc('/')">/</button>
-        </div>
-        <div class="btn-row">
-          <button type="button" class="btn-green" onclick="calculateExpr()">=</button>
-          <button type="button" class="btn-red" onclick="clearCalc()">Clear</button>
-        </div>
-        <div id="calc-result" class="result-box">Result: 0</div>
-      </div>
+        <h3>Stoichiometry Calculator</h3>
 
-      <!-- Tool 2: Unit Converter -->
-      <div id="tool-converter" class="card" style="display: none;">
-        <div class="btn-row" style="margin-bottom: 14px;">
-          <button type="button" class="btn-grey" onclick="backToTools()">Back to Tools</button>
-        </div>
-        <h3>Unit Converter</h3>
         <div class="form-group">
-          <label for="conversion-type">Conversion</label>
-          <select id="conversion-type">
-            <option value="cm_to_m">cm to m</option>
-            <option value="m_to_cm">m to cm</option>
-            <option value="g_to_kg">g to kg</option>
-            <option value="kg_to_g">kg to g</option>
+          <label for="stoich-mode-select">Select Mode</label>
+          <select id="stoich-mode-select" onchange="switchStoichMode()">
+            <option value="balance">Balance Equation</option>
+            <option value="moles_mass">Moles/Mass</option>
+            <option value="gas_volume">Gas Volume</option>
+            <option value="concentration">Concentration</option>
+            <option value="yield">Yield</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="convert-value">Value</label>
-          <input type="number" id="convert-value" step="any" placeholder="Enter value" />
+
+        <!-- Mode 1: Balance Chemical Equation -->
+        <div id="stoich-mode-balance" class="stoich-mode-panel">
+          <div class="form-group">
+            <label for="bal-eq-input">Unbalanced Equation</label>
+            <input type="text" id="bal-eq-input" placeholder="e.g., H2 + O2 -> H2O" />
+          </div>
+          <div class="btn-row">
+            <button type="button" class="btn-primary" onclick="calcBalanceEquation()">Balance</button>
+            <button type="button" class="btn-secondary" onclick="clearStoichMode('balance')">Clear</button>
+          </div>
+          <div id="bal-output" class="output-box">Enter an unbalanced chemical equation and click Balance.</div>
         </div>
-        <button type="button" class="btn-green" onclick="runConversion()">Convert</button>
-        <div id="convert-result" class="result-box">Converted value will appear here.</div>
+
+        <!-- Mode 2: Moles / Mass / Molar Mass -->
+        <div id="stoich-mode-moles_mass" class="stoich-mode-panel" style="display: none;">
+          <p style="margin-bottom: 10px;">Enter any 2 values to calculate the 3rd (Moles = Mass / Molar Mass, Mass = Moles × Molar Mass).</p>
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label for="mm-mass">Mass (g)</label>
+              <input type="number" id="mm-mass" step="any" placeholder="g" />
+            </div>
+            <div class="form-group">
+              <label for="mm-molar-mass">Molar Mass (g/mol)</label>
+              <input type="number" id="mm-molar-mass" step="any" placeholder="g/mol" />
+            </div>
+            <div class="form-group">
+              <label for="mm-moles">Moles (mol)</label>
+              <input type="number" id="mm-moles" step="any" placeholder="mol" />
+            </div>
+          </div>
+          <div class="btn-row">
+            <button type="button" class="btn-primary" onclick="calcMolesMass()">Calculate</button>
+            <button type="button" class="btn-secondary" onclick="clearStoichMode('moles_mass')">Clear</button>
+          </div>
+          <div id="mm-output" class="output-box">Enter any 2 values among Mass, Molar Mass, and Moles.</div>
+        </div>
+
+        <!-- Mode 3: Volume at RTP / STP -->
+        <div id="stoich-mode-gas_volume" class="stoich-mode-panel" style="display: none;">
+          <div class="form-group">
+            <label for="gas-condition">Condition</label>
+            <select id="gas-condition">
+              <option value="RTP">RTP (24 dm³/mol)</option>
+              <option value="STP">STP (22.4 dm³/mol)</option>
+            </select>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="gas-moles">Moles (mol)</label>
+              <input type="number" id="gas-moles" step="any" placeholder="Leave blank if solving moles" />
+            </div>
+            <div class="form-group">
+              <label for="gas-volume">Volume (dm³)</label>
+              <input type="number" id="gas-volume" step="any" placeholder="Leave blank if solving volume" />
+            </div>
+          </div>
+          <div class="btn-row">
+            <button type="button" class="btn-primary" onclick="calcGasVolume()">Calculate</button>
+            <button type="button" class="btn-secondary" onclick="clearStoichMode('gas_volume')">Clear</button>
+          </div>
+          <div id="gas-output" class="output-box">Enter Moles or Volume to calculate.</div>
+        </div>
+
+        <!-- Mode 4: Concentration / Moles / Volume -->
+        <div id="stoich-mode-concentration" class="stoich-mode-panel" style="display: none;">
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label for="conc-value">Concentration (mol/dm³)</label>
+              <input type="number" id="conc-value" step="any" placeholder="e.g., 0.5" />
+            </div>
+            <div class="form-group">
+              <label for="conc-vol">Volume</label>
+              <input type="number" id="conc-vol" step="any" placeholder="e.g., 250" />
+            </div>
+            <div class="form-group">
+              <label for="conc-vol-unit">Volume Unit</label>
+              <select id="conc-vol-unit">
+                <option value="cm3">cm³</option>
+                <option value="dm3">dm³</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="conc-moles">Moles (mol) (optional if calculating moles)</label>
+            <input type="number" id="conc-moles" step="any" placeholder="Leave blank to calculate Moles" />
+          </div>
+          <div class="btn-row">
+            <button type="button" class="btn-primary" onclick="calcConcentration()">Calculate</button>
+            <button type="button" class="btn-secondary" onclick="clearStoichMode('concentration')">Clear</button>
+          </div>
+          <div id="conc-output" class="output-box">Enter Concentration and Volume to calculate Moles.</div>
+        </div>
+
+        <!-- Mode 5: Limiting Reactant & Percentage Yield -->
+        <div id="stoich-mode-yield" class="stoich-mode-panel" style="display: none;">
+          <p style="margin-bottom: 10px;">For reaction A + B → Product (1:1 mole ratio for limiting reactant &amp; theoretical yield):</p>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="yld-mass-a">Reactant A Mass (g)</label>
+              <input type="number" id="yld-mass-a" step="any" placeholder="e.g., 10" />
+            </div>
+            <div class="form-group">
+              <label for="yld-mm-a">Reactant A Molar Mass (g/mol)</label>
+              <input type="number" id="yld-mm-a" step="any" placeholder="e.g., 20" />
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="yld-mass-b">Reactant B Mass (g)</label>
+              <input type="number" id="yld-mass-b" step="any" placeholder="e.g., 15" />
+            </div>
+            <div class="form-group">
+              <label for="yld-mm-b">Reactant B Molar Mass (g/mol)</label>
+              <input type="number" id="yld-mm-b" step="any" placeholder="e.g., 30" />
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="yld-mm-prod">Product Molar Mass (g/mol)</label>
+              <input type="number" id="yld-mm-prod" step="any" placeholder="e.g., 50" />
+            </div>
+            <div class="form-group">
+              <label for="yld-actual">Actual Yield (g)</label>
+              <input type="number" id="yld-actual" step="any" placeholder="e.g., 20" />
+            </div>
+          </div>
+          <div class="btn-row">
+            <button type="button" class="btn-primary" onclick="calcYield()">Calculate</button>
+            <button type="button" class="btn-secondary" onclick="clearStoichMode('yield')">Clear</button>
+          </div>
+          <div id="yld-output" class="output-box">Enter masses, molar masses, and actual yield.</div>
+        </div>
       </div>
 
-      <!-- Tool 3: Study Timer -->
-      <div id="tool-timer" class="card" style="display: none;">
-        <div class="btn-row" style="margin-bottom: 14px;">
-          <button type="button" class="btn-grey" onclick="backToTools()">Back to Tools</button>
+      <!-- Tool 2: Math Solver -->
+      <div id="tool-math" class="card" style="display: none;">
+        <div class="top-bar">
+          <button type="button" class="btn-secondary" onclick="backToTools()">← Back to Tools</button>
         </div>
-        <h3>Study Timer</h3>
-        <div id="timer-display" class="timer-readout">25:00</div>
-        <div class="btn-row">
-          <button type="button" class="btn-green" onclick="startTimer()">Start</button>
-          <button type="button" class="btn-orange" onclick="pauseTimer()">Pause</button>
-          <button type="button" class="btn-red" onclick="resetTimer()">Reset</button>
+        <h3>Math Solver (ax² + bx + c = 0)</h3>
+
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="quad-a">a</label>
+            <input type="number" id="quad-a" step="any" placeholder="a" />
+          </div>
+          <div class="form-group">
+            <label for="quad-b">b</label>
+            <input type="number" id="quad-b" step="any" placeholder="b" />
+          </div>
+          <div class="form-group">
+            <label for="quad-c">c</label>
+            <input type="number" id="quad-c" step="any" placeholder="c" />
+          </div>
         </div>
+
+        <button type="button" class="btn-primary" onclick="solveQuadratic()">Solve Quadratic</button>
+        <div id="math-output" class="output-box">Enter coefficients a, b, and c.</div>
       </div>
-    </section>
+
+      <!-- Tool 3: Physics Solver -->
+      <div id="tool-physics" class="card" style="display: none;">
+        <div class="top-bar">
+          <button type="button" class="btn-secondary" onclick="backToTools()">← Back to Tools</button>
+        </div>
+        <h3>Physics Solver (Kinematics)</h3>
+        <p style="margin-bottom: 12px;">Enter any <strong>3</strong> values among u, v, a, s, t and leave 2 blank.</p>
+
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="kin-u">Initial velocity u (m/s)</label>
+            <input type="number" id="kin-u" step="any" placeholder="Leave blank" />
+          </div>
+          <div class="form-group">
+            <label for="kin-v">Final velocity v (m/s)</label>
+            <input type="number" id="kin-v" step="any" placeholder="Leave blank" />
+          </div>
+          <div class="form-group">
+            <label for="kin-a">Acceleration a (m/s²)</label>
+            <input type="number" id="kin-a" step="any" placeholder="Leave blank" />
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="kin-s">Displacement s (m)</label>
+            <input type="number" id="kin-s" step="any" placeholder="Leave blank" />
+          </div>
+          <div class="form-group">
+            <label for="kin-t">Time t (s)</label>
+            <input type="number" id="kin-t" step="any" placeholder="Leave blank" />
+          </div>
+        </div>
+
+        <button type="button" class="btn-primary" onclick="solvePhysics()">Solve</button>
+        <div id="physics-output" class="output-box">Enter exactly 3 values to solve.</div>
+      </div>
+    </div>
   </div>
 
   <script>
-    const NOTES_KEY = "papanotes_notes_v1";
-    const PAPERS_KEY = "papanotes_papers_v1";
-    let currentFilter = "All";
-
-    const defaultNotes = [
-      {
-        id: "note-1",
-        subject: "Physics",
-        topic: "Equations of Linear Motion",
-        content: "v = u + at\ns = ut + 1/2at^2\nv^2 = u^2 + 2as\nwhere u = initial velocity, v = final velocity, a = acceleration, s = displacement, t = time."
-      },
-      {
-        id: "note-2",
-        subject: "Chemistry",
-        topic: "Moles & Gas Volume",
-        content: "Number of moles (n) = Mass (m) / Molar Mass (M).\nAt room temperature and pressure (RTP), 1 mole of gas occupies 24.0 dm^3."
-      }
+    /* =========================================================================
+       ADMIN DATA: MY NOTES
+       To add a new note:
+       1. Upload your PDF file into your project folder (for example: notes/kinematics.pdf).
+       2. Add a new object to the myNotes array below with:
+          { subject: "Physics", title: "Kinematics Notes", file: "notes/kinematics.pdf" }
+       Allowed subjects for filter buttons: "Physics", "Chemistry", "Biology", "Civic Ed".
+    ========================================================================= */
+    const myNotes = [
+      { subject: "Physics", title: "EXAMPLE - DELETE LATER", file: "notes/physics-example.pdf" },
     ];
 
-    const defaultPapers = [
-      {
-        id: "paper-1",
-        subject: "Chemistry",
-        year: "2023",
-        paperNo: "Paper 1",
-        paperUrl: "https://example.com",
-        solutionsUrl: "https://example.com"
-      },
-      {
-        id: "paper-2",
-        subject: "Physics",
-        year: "2023",
-        paperNo: "Paper 1",
-        paperUrl: "https://example.com",
-        solutionsUrl: "https://example.com"
-      }
+    /* =========================================================================
+       ADMIN DATA: MY PAST PAPERS
+       To add a new past paper:
+       Add a new object to the myPapers array below with:
+       {
+         subject: "Chemistry",
+         year: "2023",
+         paper: "Paper 1",
+         paperLink: "https://example.com/paper.pdf",
+         solutionsLink: "notes/solutions-chem-2023-p1.pdf"
+       }
+    ========================================================================= */
+    const myPapers = [
+      { subject: "Chemistry", year: "2023", paper: "Paper 1", paperLink: "https://example.com/paper.pdf", solutionsLink: "notes/solutions-chem-2023-p1.pdf" },
     ];
 
-    function showTab(tabName) {
-      const notesSec = document.getElementById("notes-section");
-      const papersSec = document.getElementById("papers-section");
-      const toolsSec = document.getElementById("tools-section");
+    let activeSubjectFilter = "All";
 
-      const btnNotes = document.getElementById("tab-btn-notes");
-      const btnPapers = document.getElementById("tab-btn-papers");
-      const btnTools = document.getElementById("tab-btn-tools");
+    function openPage(pageName) {
+      document.getElementById("home-page").style.display = "none";
+      document.getElementById("notes-page").style.display = "none";
+      document.getElementById("papers-page").style.display = "none";
+      document.getElementById("tools-page").style.display = "none";
 
-      notesSec.style.display = "none";
-      papersSec.style.display = "none";
-      toolsSec.style.display = "none";
-
-      btnNotes.className = "nav-inactive";
-      btnPapers.className = "nav-inactive";
-      btnTools.className = "nav-inactive";
-
-      if (tabName === "notes") {
-        notesSec.style.display = "block";
-        btnNotes.className = "nav-active";
-      } else if (tabName === "papers") {
-        papersSec.style.display = "block";
-        btnPapers.className = "nav-active";
-      } else if (tabName === "tools") {
-        toolsSec.style.display = "block";
-        btnTools.className = "nav-active";
+      if (pageName === "home") {
+        document.getElementById("home-page").style.display = "block";
+      } else if (pageName === "notes") {
+        document.getElementById("notes-page").style.display = "block";
+        renderNotes();
+      } else if (pageName === "papers") {
+        document.getElementById("papers-page").style.display = "block";
+        renderPapers();
+      } else if (pageName === "tools") {
+        document.getElementById("tools-page").style.display = "block";
         backToTools();
       }
     }
 
-    function getNotes() {
-      const raw = localStorage.getItem(NOTES_KEY);
-      if (!raw) {
-        localStorage.setItem(NOTES_KEY, JSON.stringify(defaultNotes));
-        return [...defaultNotes];
-      }
-      try {
-        return JSON.parse(raw);
-      } catch (e) {
-        return [...defaultNotes];
-      }
-    }
-
-    function setNotes(notes) {
-      localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
-    }
-
     function filterNotes(subject) {
-      currentFilter = subject;
-      const subjects = ["All", "Physics", "Chemistry", "Biology", "Civic Ed"];
-      subjects.forEach((s) => {
-        const btn = document.getElementById("filter-" + s);
+      activeSubjectFilter = subject;
+      const filters = ["All", "Physics", "Chemistry", "Biology", "Civic Ed"];
+      filters.forEach((f) => {
+        const btn = document.getElementById("filter-btn-" + f);
         if (btn) {
-          btn.className = s === subject ? "btn-blue" : "btn-grey";
+          btn.className = f === subject ? "filter-active" : "filter-inactive";
         }
       });
       renderNotes();
     }
 
-    function saveNote(event) {
-      event.preventDefault();
-      const subjectEl = document.getElementById("note-subject");
-      const topicEl = document.getElementById("note-topic");
-      const contentEl = document.getElementById("note-content");
-
-      const newNote = {
-        id: "note-" + Date.now(),
-        subject: subjectEl.value,
-        topic: topicEl.value.trim(),
-        content: contentEl.value.trim()
-      };
-
-      const notes = getNotes();
-      notes.unshift(newNote);
-      setNotes(notes);
-
-      topicEl.value = "";
-      contentEl.value = "";
-      renderNotes();
-    }
-
-    function deleteNote(noteId) {
-      const notes = getNotes().filter((n) => n.id !== noteId);
-      setNotes(notes);
-      renderNotes();
-    }
-
-    function downloadSingleNotePdf(noteId) {
-      const note = getNotes().find((n) => n.id === noteId);
-      if (!note) return;
-
-      if (window.jspdf && window.jspdf.jsPDF) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.setFontSize(18);
-        doc.text(note.topic, 14, 20);
-        doc.setFontSize(12);
-        doc.text("Subject: " + note.subject, 14, 30);
-        doc.setFontSize(11);
-        const lines = doc.splitTextToSize(note.content, 180);
-        doc.text(lines, 14, 42);
-        const fileName = (note.subject + "-" + note.topic).replace(/[^a-z0-9]/gi, "_").toLowerCase() + ".pdf";
-        doc.save(fileName);
-      } else {
-        const printWin = window.open("", "_blank");
-        printWin.document.write(
-          "<html><head><title>" + escapeHtml(note.topic) + "</title></head><body>" +
-          "<h1>" + escapeHtml(note.topic) + "</h1>" +
-          "<p><strong>Subject:</strong> " + escapeHtml(note.subject) + "</p>" +
-          "<pre style='font-family:sans-serif;white-space:pre-wrap;'>" + escapeHtml(note.content) + "</pre>" +
-          "</body></html>"
-        );
-        printWin.document.close();
-        printWin.focus();
-        printWin.print();
-      }
-    }
-
     function renderNotes() {
-      const listEl = document.getElementById("notes-list");
-      const notes = getNotes();
-      const filtered = currentFilter === "All"
-        ? notes
-        : notes.filter((n) => n.subject === currentFilter);
+      const container = document.getElementById("notes-list");
+      const list = activeSubjectFilter === "All"
+        ? myNotes
+        : myNotes.filter((n) => n.subject === activeSubjectFilter);
 
-      if (filtered.length === 0) {
-        listEl.innerHTML = '<div class="card">No notes found for ' + escapeHtml(currentFilter) + '.</div>';
+      if (list.length === 0) {
+        container.innerHTML = '<div class="card">No notes available for ' + escapeHtml(activeSubjectFilter) + '.</div>';
         return;
       }
 
-      listEl.innerHTML = filtered.map((note) => (
-        '<div class="card" data-subject="' + escapeHtml(note.subject) + '">' +
+      container.innerHTML = list.map((note) => (
+        '<div class="card">' +
           '<span class="badge">' + escapeHtml(note.subject) + '</span>' +
-          '<h3>' + escapeHtml(note.topic) + '</h3>' +
-          '<p class="note-text">' + escapeHtml(note.content) + '</p>' +
+          '<h3>' + escapeHtml(note.title) + '</h3>' +
           '<div class="btn-row">' +
-            '<button type="button" class="btn-blue" onclick="downloadSingleNotePdf(\'' + escapeAttr(note.id) + '\')">Download PDF</button>' +
-            '<button type="button" class="btn-red" onclick="deleteNote(\'' + escapeAttr(note.id) + '\')">Delete</button>' +
+            '<a class="btn-link btn-primary" href="' + escapeAttr(note.file) + '" download target="_blank" rel="noopener noreferrer">Download PDF</a>' +
           '</div>' +
         '</div>'
       )).join("");
     }
 
-    function getPapers() {
-      const raw = localStorage.getItem(PAPERS_KEY);
-      if (!raw) {
-        localStorage.setItem(PAPERS_KEY, JSON.stringify(defaultPapers));
-        return [...defaultPapers];
-      }
-      try {
-        return JSON.parse(raw);
-      } catch (e) {
-        return [...defaultPapers];
-      }
-    }
-
-    function setPapers(papers) {
-      localStorage.setItem(PAPERS_KEY, JSON.stringify(papers));
-    }
-
-    function addPaper(event) {
-      event.preventDefault();
-      const subjectEl = document.getElementById("paper-subject");
-      const yearEl = document.getElementById("paper-year");
-      const paperNoEl = document.getElementById("paper-no");
-      const paperLinkEl = document.getElementById("paper-link");
-      const solutionsLinkEl = document.getElementById("solutions-link");
-
-      const paper = {
-        id: "paper-" + Date.now(),
-        subject: subjectEl.value,
-        year: yearEl.value.trim(),
-        paperNo: paperNoEl.value.trim(),
-        paperUrl: sanitizeUrl(paperLinkEl.value.trim()),
-        solutionsUrl: sanitizeUrl(solutionsLinkEl.value.trim())
-      };
-
-      const papers = getPapers();
-      papers.unshift(paper);
-      setPapers(papers);
-
-      yearEl.value = "";
-      paperNoEl.value = "";
-      paperLinkEl.value = "https://example.com";
-      solutionsLinkEl.value = "https://example.com";
-      renderPapers();
-    }
-
     function renderPapers() {
-      const listEl = document.getElementById("papers-list");
-      const papers = getPapers();
-
-      if (papers.length === 0) {
-        listEl.innerHTML = '<div class="card">No past papers added yet.</div>';
+      const container = document.getElementById("papers-list");
+      if (myPapers.length === 0) {
+        container.innerHTML = '<div class="card">No past papers available yet.</div>';
         return;
       }
 
-      listEl.innerHTML = papers.map((p) => (
+      container.innerHTML = myPapers.map((p) => (
         '<div class="card">' +
-          '<p class="paper-meta">Subject: ' + escapeHtml(p.subject) + ' | Year: ' + escapeHtml(p.year) + ' | Paper No.: ' + escapeHtml(p.paperNo) + '</p>' +
+          '<p class="paper-line">' + escapeHtml(p.subject) + ' | ' + escapeHtml(p.year) + ' | ' + escapeHtml(p.paper) + '</p>' +
           '<div class="btn-row">' +
-            '<button type="button" class="btn-blue" onclick="window.open(\'' + escapeAttr(sanitizeUrl(p.paperUrl)) + '\', \'_blank\', \'noopener,noreferrer\')">View Official Paper</button>' +
-            '<button type="button" class="btn-green" onclick="window.open(\'' + escapeAttr(sanitizeUrl(p.solutionsUrl)) + '\', \'_blank\', \'noopener,noreferrer\')">View My Solutions</button>' +
+            '<a class="btn-link btn-primary" href="' + escapeAttr(p.paperLink) + '" target="_blank" rel="noopener noreferrer">View Official Paper</a>' +
+            '<a class="btn-link btn-secondary" href="' + escapeAttr(p.solutionsLink) + '" download target="_blank" rel="noopener noreferrer">Download My Solutions PDF</a>' +
           '</div>' +
         '</div>'
       )).join("");
     }
 
     function openTool(toolName) {
-      document.getElementById("tools-menu").style.display = "none";
-      document.getElementById("tool-calculator").style.display = "none";
-      document.getElementById("tool-converter").style.display = "none";
-      document.getElementById("tool-timer").style.display = "none";
+      document.getElementById("tools-grid").style.display = "none";
+      document.getElementById("tool-stoich").style.display = "none";
+      document.getElementById("tool-math").style.display = "none";
+      document.getElementById("tool-physics").style.display = "none";
 
-      if (toolName === "calculator") {
-        document.getElementById("tool-calculator").style.display = "block";
-      } else if (toolName === "converter") {
-        document.getElementById("tool-converter").style.display = "block";
-      } else if (toolName === "timer") {
-        document.getElementById("tool-timer").style.display = "block";
+      if (toolName === "stoich") {
+        document.getElementById("tool-stoich").style.display = "block";
+        switchStoichMode();
+      } else if (toolName === "math") {
+        document.getElementById("tool-math").style.display = "block";
+      } else if (toolName === "physics") {
+        document.getElementById("tool-physics").style.display = "block";
       }
     }
 
     function backToTools() {
-      document.getElementById("tool-calculator").style.display = "none";
-      document.getElementById("tool-converter").style.display = "none";
-      document.getElementById("tool-timer").style.display = "none";
-      document.getElementById("tools-menu").style.display = "grid";
+      document.getElementById("tool-stoich").style.display = "none";
+      document.getElementById("tool-math").style.display = "none";
+      document.getElementById("tool-physics").style.display = "none";
+      document.getElementById("tools-grid").style.display = "grid";
     }
 
-    function appendCalc(op) {
-      const input = document.getElementById("calc-input");
-      input.value = (input.value || "") + op;
-      input.focus();
+    function switchStoichMode() {
+      const mode = document.getElementById("stoich-mode-select").value;
+      const modes = ["balance", "moles_mass", "gas_volume", "concentration", "yield"];
+      modes.forEach((m) => {
+        const panel = document.getElementById("stoich-mode-" + m);
+        if (panel) {
+          panel.style.display = m === mode ? "block" : "none";
+        }
+      });
     }
 
-    function clearCalc() {
-      document.getElementById("calc-input").value = "";
-      document.getElementById("calc-result").textContent = "Result: 0";
+    function clearStoichMode(mode) {
+      if (mode === "balance") {
+        document.getElementById("bal-eq-input").value = "";
+        document.getElementById("bal-output").textContent = "Enter an unbalanced chemical equation and click Balance.";
+      } else if (mode === "moles_mass") {
+        document.getElementById("mm-mass").value = "";
+        document.getElementById("mm-molar-mass").value = "";
+        document.getElementById("mm-moles").value = "";
+        document.getElementById("mm-output").textContent = "Enter any 2 values among Mass, Molar Mass, and Moles.";
+      } else if (mode === "gas_volume") {
+        document.getElementById("gas-moles").value = "";
+        document.getElementById("gas-volume").value = "";
+        document.getElementById("gas-output").textContent = "Enter Moles or Volume to calculate.";
+      } else if (mode === "concentration") {
+        document.getElementById("conc-value").value = "";
+        document.getElementById("conc-vol").value = "";
+        document.getElementById("conc-moles").value = "";
+        document.getElementById("conc-output").textContent = "Enter Concentration and Volume to calculate Moles.";
+      } else if (mode === "yield") {
+        ["yld-mass-a", "yld-mm-a", "yld-mass-b", "yld-mm-b", "yld-mm-prod", "yld-actual"].forEach((id) => {
+          document.getElementById(id).value = "";
+        });
+        document.getElementById("yld-output").textContent = "Enter masses, molar masses, and actual yield.";
+      }
     }
 
-    function calculateExpr() {
-      const expr = document.getElementById("calc-input").value.trim();
-      const resultEl = document.getElementById("calc-result");
-      if (!expr) {
-        resultEl.textContent = "Result: 0";
+    function parseFormulaAtoms(formula) {
+      const atoms = {};
+      const regex = /([A-Z][a-z]*)(\d*)/g;
+      let match;
+      while ((match = regex.exec(formula)) !== null) {
+        const el = match[1];
+        const count = parseInt(match[2] || "1", 10);
+        atoms[el] = (atoms[el] || 0) + count;
+      }
+      if (Object.keys(atoms).length === 0) {
+        throw new Error("Invalid formula: " + formula);
+      }
+      return atoms;
+    }
+
+    function parseSideTerms(sideStr) {
+      return sideStr.split("+").map((part) => {
+        const clean = part.trim();
+        const m = clean.match(/^(\d*)([A-Za-z0-9]+)$/);
+        if (!m) {
+          throw new Error("Invalid species: " + clean);
+        }
+        return {
+          coeff: parseInt(m[1] || "1", 10),
+          formula: m[2],
+          atoms: parseFormulaAtoms(m[2])
+        };
+      });
+    }
+
+    function calcBalanceEquation() {
+      const out = document.getElementById("bal-output");
+      const raw = (document.getElementById("bal-eq-input").value || "").trim().replace(/(=>|→|⟶|=)/g, "->");
+
+      if (!raw.includes("->")) {
+        out.innerHTML = '<span class="error-text">Enter a reaction with an arrow, e.g. H2 + O2 -> H2O</span>';
         return;
       }
-      if (!/^[0-9+\-*/().\s]+$/.test(expr)) {
-        resultEl.textContent = "Invalid characters in expression.";
+
+      const parts = raw.split("->");
+      if (parts.length !== 2 || !parts[0].trim() || !parts[1].trim()) {
+        out.innerHTML = '<span class="error-text">Enter both reactants and products, e.g. H2 + O2 -> H2O</span>';
         return;
       }
+
       try {
-        const val = Function('"use strict"; return (' + expr + ')')();
-        if (typeof val !== "number" || !Number.isFinite(val)) {
-          resultEl.textContent = "Math error.";
-        } else {
-          resultEl.textContent = "Result: " + val;
+        const reactants = parseSideTerms(parts[0]);
+        const products = parseSideTerms(parts[1]);
+        const allTerms = reactants.concat(products);
+        const elementSet = new Set();
+        allTerms.forEach((t) => Object.keys(t.atoms).forEach((el) => elementSet.add(el)));
+        const elements = Array.from(elementSet);
+
+        const matrix = elements.map((el) =>
+          allTerms.map((term, idx) => {
+            const count = term.atoms[el] || 0;
+            return idx < reactants.length ? count : -count;
+          })
+        );
+
+        let found = null;
+        function searchCoeffs(index, current) {
+          if (found) return;
+          if (index === allTerms.length) {
+            const balanced = matrix.every((row) => row.reduce((sum, val, i) => sum + val * current[i], 0) === 0);
+            if (balanced) found = current.slice();
+            return;
+          }
+          for (let n = 1; n <= 12; n++) {
+            current[index] = n;
+            searchCoeffs(index + 1, current);
+            if (found) return;
+          }
         }
-      } catch (e) {
-        resultEl.textContent = "Invalid expression.";
+
+        searchCoeffs(0, new Array(allTerms.length).fill(1));
+        if (!found) {
+          out.innerHTML = '<span class="error-text">Could not find integer coefficients within 1..12.</span>';
+          return;
+        }
+
+        const rStr = reactants.map((t, i) => (found[i] === 1 ? "" : found[i]) + t.formula).join(" + ");
+        const pStr = products.map((t, i) => (found[reactants.length + i] === 1 ? "" : found[reactants.length + i]) + t.formula).join(" + ");
+        const balancedEq = rStr + " -> " + pStr;
+
+        out.textContent =
+          "Formula: Conservation of atoms on both sides\n" +
+          "Substitution: " + raw + "\n" +
+          "Balanced Equation: " + balancedEq;
+      } catch (err) {
+        out.innerHTML = '<span class="error-text">' + escapeHtml(err.message) + '</span>';
       }
     }
 
-    function runConversion() {
-      const type = document.getElementById("conversion-type").value;
-      const val = parseFloat(document.getElementById("convert-value").value);
-      const out = document.getElementById("convert-result");
+    function calcMolesMass() {
+      const out = document.getElementById("mm-output");
+      const mass = parseFloat(document.getElementById("mm-mass").value);
+      const mm = parseFloat(document.getElementById("mm-molar-mass").value);
+      const moles = parseFloat(document.getElementById("mm-moles").value);
 
-      if (Number.isNaN(val)) {
-        out.textContent = "Please enter a valid number.";
+      const hasMass = !Number.isNaN(mass);
+      const hasMM = !Number.isNaN(mm);
+      const hasMoles = !Number.isNaN(moles);
+      const count = (hasMass ? 1 : 0) + (hasMM ? 1 : 0) + (hasMoles ? 1 : 0);
+
+      if (count !== 2) {
+        out.innerHTML = '<span class="error-text">Please enter any 2 values among Mass, Molar Mass, and Moles.</span>';
         return;
       }
 
-      if (type === "cm_to_m") {
-        out.textContent = val + " cm = " + (val / 100) + " m";
-      } else if (type === "m_to_cm") {
-        out.textContent = val + " m = " + (val * 100) + " cm";
-      } else if (type === "g_to_kg") {
-        out.textContent = val + " g = " + (val / 1000) + " kg";
-      } else if (type === "kg_to_g") {
-        out.textContent = val + " kg = " + (val * 1000) + " g";
-      }
-    }
-
-    let timerSeconds = 25 * 60;
-    let timerInterval = null;
-
-    function updateTimerDisplay() {
-      const mins = Math.floor(timerSeconds / 60);
-      const secs = timerSeconds % 60;
-      const mm = String(mins).padStart(2, "0");
-      const ss = String(secs).padStart(2, "0");
-      document.getElementById("timer-display").textContent = mm + ":" + ss;
-    }
-
-    function startTimer() {
-      if (timerInterval !== null) return;
-      timerInterval = setInterval(() => {
-        if (timerSeconds > 0) {
-          timerSeconds -= 1;
-          updateTimerDisplay();
-        } else {
-          pauseTimer();
+      if (!hasMoles && hasMass && hasMM) {
+        if (mm <= 0) {
+          out.innerHTML = '<span class="error-text">Molar Mass must be greater than 0.</span>';
+          return;
         }
-      }, 1000);
-    }
-
-    function pauseTimer() {
-      if (timerInterval !== null) {
-        clearInterval(timerInterval);
-        timerInterval = null;
+        const n = mass / mm;
+        out.textContent =
+          "Formula: Moles = Mass / Molar Mass\n" +
+          "Substitution: Moles = " + mass + " g / " + mm + " g/mol\n" +
+          "Answer: " + n.toFixed(4) + " mol";
+      } else if (!hasMass && hasMoles && hasMM) {
+        const m = moles * mm;
+        out.textContent =
+          "Formula: Mass = Moles × Molar Mass\n" +
+          "Substitution: Mass = " + moles + " mol × " + mm + " g/mol\n" +
+          "Answer: " + m.toFixed(4) + " g";
+      } else if (!hasMM && hasMass && hasMoles) {
+        if (moles <= 0) {
+          out.innerHTML = '<span class="error-text">Moles must be greater than 0.</span>';
+          return;
+        }
+        const computedMM = mass / moles;
+        out.textContent =
+          "Formula: Molar Mass = Mass / Moles\n" +
+          "Substitution: Molar Mass = " + mass + " g / " + moles + " mol\n" +
+          "Answer: " + computedMM.toFixed(4) + " g/mol";
       }
     }
 
-    function resetTimer() {
-      pauseTimer();
-      timerSeconds = 25 * 60;
-      updateTimerDisplay();
+    function calcGasVolume() {
+      const out = document.getElementById("gas-output");
+      const cond = document.getElementById("gas-condition").value;
+      const factor = cond === "STP" ? 22.4 : 24;
+      const moles = parseFloat(document.getElementById("gas-moles").value);
+      const vol = parseFloat(document.getElementById("gas-volume").value);
+
+      const hasMoles = !Number.isNaN(moles);
+      const hasVol = !Number.isNaN(vol);
+
+      if (hasMoles && !hasVol) {
+        const v = moles * factor;
+        out.textContent =
+          "Formula (" + cond + "): Volume = Moles × " + factor + " dm³\n" +
+          "Substitution: Volume = " + moles + " mol × " + factor + " dm³/mol\n" +
+          "Answer: " + v.toFixed(4) + " dm³";
+      } else if (hasVol && !hasMoles) {
+        const n = vol / factor;
+        out.textContent =
+          "Formula (" + cond + "): Moles = Volume / " + factor + "\n" +
+          "Substitution: Moles = " + vol + " dm³ / " + factor + " dm³/mol\n" +
+          "Answer: " + n.toFixed(4) + " mol";
+      } else {
+        out.innerHTML = '<span class="error-text">Enter either Moles or Volume (leave the other blank).</span>';
+      }
     }
 
-    function sanitizeUrl(url) {
-      if (/^https?:\/\//i.test(url)) return url;
-      return "https://example.com";
+    function calcConcentration() {
+      const out = document.getElementById("conc-output");
+      const conc = parseFloat(document.getElementById("conc-value").value);
+      const rawVol = parseFloat(document.getElementById("conc-vol").value);
+      const unit = document.getElementById("conc-vol-unit").value;
+      const molesInput = parseFloat(document.getElementById("conc-moles").value);
+
+      if (Number.isNaN(rawVol) || rawVol < 0) {
+        out.innerHTML = '<span class="error-text">Please enter a valid Volume.</span>';
+        return;
+      }
+
+      const volDm3 = unit === "cm3" ? rawVol / 1000 : rawVol;
+      const conversionNote = unit === "cm3"
+        ? "Conversion: " + rawVol + " cm³ / 1000 = " + volDm3 + " dm³\n"
+        : "Volume in dm³: " + volDm3 + " dm³\n";
+
+      if (!Number.isNaN(conc) && Number.isNaN(molesInput)) {
+        const n = conc * volDm3;
+        out.textContent =
+          conversionNote +
+          "Formula: Moles = Concentration × Volume (dm³)\n" +
+          "Substitution: Moles = " + conc + " mol/dm³ × " + volDm3 + " dm³\n" +
+          "Answer: " + n.toFixed(4) + " mol";
+      } else if (!Number.isNaN(molesInput) && Number.isNaN(conc)) {
+        if (volDm3 === 0) {
+          out.innerHTML = '<span class="error-text">Volume in dm³ cannot be 0.</span>';
+          return;
+        }
+        const c = molesInput / volDm3;
+        out.textContent =
+          conversionNote +
+          "Formula: Concentration = Moles / Volume (dm³)\n" +
+          "Substitution: Concentration = " + molesInput + " mol / " + volDm3 + " dm³\n" +
+          "Answer: " + c.toFixed(4) + " mol/dm³";
+      } else {
+        out.innerHTML = '<span class="error-text">Enter Concentration and Volume to solve Moles (or Moles and Volume to solve Concentration).</span>';
+      }
+    }
+
+    function calcYield() {
+      const out = document.getElementById("yld-output");
+      const mA = parseFloat(document.getElementById("yld-mass-a").value);
+      const mmA = parseFloat(document.getElementById("yld-mm-a").value);
+      const mB = parseFloat(document.getElementById("yld-mass-b").value);
+      const mmB = parseFloat(document.getElementById("yld-mm-b").value);
+      const mmProd = parseFloat(document.getElementById("yld-mm-prod").value);
+      const actual = parseFloat(document.getElementById("yld-actual").value);
+
+      if ([mA, mmA, mB, mmB, mmProd, actual].some(Number.isNaN) || mmA <= 0 || mmB <= 0 || mmProd <= 0) {
+        out.innerHTML = '<span class="error-text">Please enter valid numbers for all fields (molar masses > 0).</span>';
+        return;
+      }
+
+      const molA = mA / mmA;
+      const molB = mB / mmB;
+      const limitingName = molA <= molB ? "Reactant A" : "Reactant B";
+      const limitingMoles = Math.min(molA, molB);
+      const theoreticalYield = limitingMoles * mmProd;
+
+      if (theoreticalYield === 0) {
+        out.innerHTML = '<span class="error-text">Theoretical yield is 0 g.</span>';
+        return;
+      }
+
+      const pctYield = (actual / theoreticalYield) * 100;
+
+      out.textContent =
+        "Moles A = " + mA + " / " + mmA + " = " + molA.toFixed(4) + " mol\n" +
+        "Moles B = " + mB + " / " + mmB + " = " + molB.toFixed(4) + " mol\n" +
+        "Limiting Reactant: " + limitingName + "\n" +
+        "Formula (Theoretical Yield): Moles(limiting) × Molar Mass(product)\n" +
+        "Substitution: " + limitingMoles.toFixed(4) + " mol × " + mmProd + " g/mol = " + theoreticalYield.toFixed(4) + " g\n" +
+        "Formula (% Yield): (Actual Yield / Theoretical Yield) × 100\n" +
+        "Substitution: (" + actual + " g / " + theoreticalYield.toFixed(4) + " g) × 100\n" +
+        "Answer: Limiting = " + limitingName + " | Theoretical Yield = " + theoreticalYield.toFixed(4) + " g | % Yield = " + pctYield.toFixed(2) + "%";
+    }
+
+    function solveQuadratic() {
+      const out = document.getElementById("math-output");
+      const a = parseFloat(document.getElementById("quad-a").value);
+      const b = parseFloat(document.getElementById("quad-b").value);
+      const c = parseFloat(document.getElementById("quad-c").value);
+
+      if ([a, b, c].some(Number.isNaN) || a === 0) {
+        out.innerHTML = '<span class="error-text">Enter valid numbers for a, b, and c (with a not equal to 0).</span>';
+        return;
+      }
+
+      const d = b * b - 4 * a * c;
+      let text = "Discriminant (D) = " + d.toFixed(4) + "\n";
+
+      if (d > 0) {
+        const x1 = (-b + Math.sqrt(d)) / (2 * a);
+        const x2 = (-b - Math.sqrt(d)) / (2 * a);
+        text += "x1 = " + x1.toFixed(4) + "\nx2 = " + x2.toFixed(4);
+      } else if (d === 0) {
+        const x = -b / (2 * a);
+        text += "x1 = " + x.toFixed(4) + "\nx2 = " + x.toFixed(4);
+      } else {
+        const real = (-b / (2 * a)).toFixed(4);
+        const imag = (Math.sqrt(-d) / (2 * a)).toFixed(4);
+        text += "x1 = " + real + " + " + imag + "i\nx2 = " + real + " - " + imag + "i";
+      }
+
+      out.textContent = text;
+    }
+
+    function solvePhysics() {
+      const out = document.getElementById("physics-output");
+      const raw = {
+        u: parseFloat(document.getElementById("kin-u").value),
+        v: parseFloat(document.getElementById("kin-v").value),
+        a: parseFloat(document.getElementById("kin-a").value),
+        s: parseFloat(document.getElementById("kin-s").value),
+        t: parseFloat(document.getElementById("kin-t").value)
+      };
+
+      const knownKeys = Object.keys(raw).filter((k) => !Number.isNaN(raw[k]));
+      if (knownKeys.length !== 3) {
+        out.innerHTML = '<span class="error-text">Please enter exactly 3 values and leave 2 blank.</span>';
+        return;
+      }
+
+      const k = {};
+      knownKeys.forEach((key) => { k[key] = raw[key]; });
+
+      try {
+        for (let pass = 0; pass < 3; pass++) {
+          if (k.v === undefined && k.u !== undefined && k.a !== undefined && k.t !== undefined) {
+            k.v = k.u + k.a * k.t;
+          }
+          if (k.s === undefined && k.u !== undefined && k.a !== undefined && k.t !== undefined) {
+            k.s = k.u * k.t + 0.5 * k.a * k.t * k.t;
+          }
+          if (k.v === undefined && k.u !== undefined && k.a !== undefined && k.s !== undefined) {
+            const v2 = k.u * k.u + 2 * k.a * k.s;
+            if (v2 < 0) throw new Error("Negative value under square root for v.");
+            k.v = Math.sqrt(v2);
+          }
+          if (k.s === undefined && k.v !== undefined && k.u !== undefined && k.a !== undefined) {
+            if (k.a === 0) throw new Error("Acceleration cannot be zero for v^2 = u^2 + 2as.");
+            k.s = (k.v * k.v - k.u * k.u) / (2 * k.a);
+          }
+          if (k.u === undefined && k.v !== undefined && k.a !== undefined && k.t !== undefined) {
+            k.u = k.v - k.a * k.t;
+          }
+          if (k.a === undefined && k.v !== undefined && k.u !== undefined && k.t !== undefined) {
+            if (k.t === 0) throw new Error("Time cannot be zero.");
+            k.a = (k.v - k.u) / k.t;
+          }
+          if (k.t === undefined && k.v !== undefined && k.u !== undefined && k.a !== undefined) {
+            if (k.a === 0) throw new Error("Acceleration cannot be zero.");
+            k.t = (k.v - k.u) / k.a;
+          }
+          if (k.u === undefined && k.s !== undefined && k.a !== undefined && k.t !== undefined) {
+            if (k.t === 0) throw new Error("Time cannot be zero.");
+            k.u = (k.s - 0.5 * k.a * k.t * k.t) / k.t;
+          }
+          if (k.a === undefined && k.s !== undefined && k.u !== undefined && k.t !== undefined) {
+            if (k.t === 0) throw new Error("Time cannot be zero.");
+            k.a = (2 * (k.s - k.u * k.t)) / (k.t * k.t);
+          }
+          if (k.u === undefined && k.v !== undefined && k.a !== undefined && k.s !== undefined) {
+            const u2 = k.v * k.v - 2 * k.a * k.s;
+            if (u2 < 0) throw new Error("Negative value under square root for u.");
+            k.u = Math.sqrt(u2);
+          }
+          if (k.a === undefined && k.v !== undefined && k.u !== undefined && k.s !== undefined) {
+            if (k.s === 0) throw new Error("Displacement cannot be zero.");
+            k.a = (k.v * k.v - k.u * k.u) / (2 * k.s);
+          }
+        }
+
+        const missing = ["u", "v", "a", "s", "t"].filter((key) => k[key] === undefined);
+        if (missing.length > 0) {
+          throw new Error("Could not solve directly with these values. Try another combination.");
+        }
+
+        out.textContent =
+          "u = " + k.u.toFixed(4) + " m/s\n" +
+          "v = " + k.v.toFixed(4) + " m/s\n" +
+          "a = " + k.a.toFixed(4) + " m/s²\n" +
+          "s = " + k.s.toFixed(4) + " m\n" +
+          "t = " + k.t.toFixed(4) + " s";
+      } catch (err) {
+        out.innerHTML = '<span class="error-text">' + escapeHtml(err.message) + '</span>';
+      }
     }
 
     function escapeHtml(str) {
@@ -810,13 +1126,15 @@
     }
 
     function escapeAttr(str) {
-      return String(str).replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
     }
 
-    showTab("notes");
+    openPage("home");
     filterNotes("All");
     renderPapers();
-    updateTimerDisplay();
   </script>
 </body>
 </html>
